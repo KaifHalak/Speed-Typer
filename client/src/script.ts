@@ -7,12 +7,7 @@ let startTypingFlag: Boolean = false
 let currentIndex = 0
 const excludedKeys = ["Shift", "Control", "Alt"]
 
-let text = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius libero quae, reprehenderit optio quam suscipit quidem possimus debitis ut ipsum. Maxime natus molestiae, tempore quas explicabo dolore qui officiis rem!"
-
-let formattedText = text.split("").map((char) => `<span id='textChar' class='py-1'>${char}</span>`).join("")
-
-UI.textSection.innerHTML = formattedText
-
+const text = "<%= text %>";
 const allTextChar = document.querySelectorAll("#textChar")
 
 allTextChar[currentIndex].classList.add("text-highlight")

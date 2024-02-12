@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 
-<link rel="stylesheet" href="tailwind.css">
+<link rel="stylesheet" href="/tailwind.css">
 
 <body>
 
@@ -36,7 +36,11 @@
             <div class="relative mockup-window border border-base-300 ">
 
                 <div class="cursor-pointer blur-sm p-5 border-t border-base-300 resize-none text-2xl text-gray-400"
-                    id="textSection"></div>
+                    id="textSection">
+                    <% let formattedText=text.split("").map(char=> `<span id='textChar'
+                            class='py-1'>${char}</span>`).join(""); %>
+                        <%= formattedText %>
+                </div>
 
             </div>
 
@@ -50,6 +54,6 @@
     </div>
 
 </body>
-<script src="script.js"></script>
+<script src="/script.js"></script>
 
 </html>
