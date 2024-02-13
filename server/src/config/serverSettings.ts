@@ -3,7 +3,7 @@ import http from "http"
 import cors from "cors"
 import path from "path"
 import passport from "passport"
-import cookieSession from "cookie-session";
+const expressSession = require("express-session")
 
 const EJS_PATH = path.join(__dirname, "../", "../","../", "client", "public")
 const STATIC_FILES_PATH = express.static(path.join(__dirname, "../","../", "../", "client", "public"))
@@ -11,11 +11,16 @@ const STATIC_FILES_PATH = express.static(path.join(__dirname, "../","../", "../"
 const app = express();
 const server = http.createServer(app);
 
-app.use(cookieSession({
+app.use(expressSession({
+  secret: ["key 1"],
   name:"speedTyperSession",
-  keys: ["key1"],
-  maxAge: 24 * 60 * 60 * 1000
+  maxAge: 24 * 60 * 60 * 1000,
+  sameSite: true,
+  resave: false,
+  saveUninitialized: false,
+  store: new expressSession.MemoryStore()
 }))
+
 app.use(passport.initialize())
 app.use(passport.session())
 // way around passport error

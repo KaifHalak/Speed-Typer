@@ -13,16 +13,18 @@
         integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
         crossorigin="anonymous"></script>
 
+
 </head>
 
 <body>
 
-    <% let title, subTitle, linkText, linkHref, googleText, confirmPasswordElementClass, submitBtnText; if
+    <% let title, subTitle, linkText, linkHref, googleText, confirmPasswordElementClass, submitBtnText,submitBtnLink; if
         (type==="login" ) { title="Login" ; subTitle="Don't have an account?" ; linkText="Register" ;
         linkHref="/auth/signup" ; googleText="Log in with Google" ; confirmPasswordElementClass="hidden" ;
-        submitBtnText="Login" ; } else { title="Create an account" ; subTitle="Already have an account?" ;
-        linkText="Log in" ; linkHref="/auth/login" ; googleText="Create with Google" ; confirmPasswordElementClass="" ;
-        submitBtnText="Sign Up" ; } %>
+        submitBtnText="Login" ; submitBtnLink="/auth/login" } else { title="Create an account" ;
+        subTitle="Already have an account?" ; linkText="Log in" ; linkHref="/auth/login" ;
+        googleText="Create with Google" ; confirmPasswordElementClass="" ; submitBtnText="Sign Up" ;
+        submitBtnLink="/auth/signup" } %>
 
         <%- include('./views/navbar.ejs') %>
 
@@ -69,12 +71,12 @@
 
                     <div class="divider my-0">OR</div>
 
-                    <form action="/auth/login" method="POST">
+                    <form hx-post="<%= submitBtnLink %>" hx-swap="none" onclick="hideDialogs()">
                         <label class="form-control">
                             <div class="label">
                                 <span class="label-text">Email</span>
                             </div>
-                            <input name="username" class="input input-bordered" />
+                            <input name="email" class="input input-bordered" />
                         </label>
 
                         <label class="form-control">
@@ -88,12 +90,12 @@
                             <div class="label">
                                 <span class="label-text">Confirm password</span>
                             </div>
-                            <input name="confirm_password" type="password" class="input input-bordered" />
+                            <input name="confirmPassword" type="password" class="input input-bordered" />
                         </label>
 
                         <div class="form-control">
                             <label class="cursor-pointer label self-start gap-2">
-                                <input type="checkbox" class="checkbox" />
+                                <input name="termsAndConditions" type="checkbox" class="checkbox" />
                                 <span class="label-text">
                                     I accept the
                                     <a class="link link-accent">Terms and Conditions</a>
@@ -106,9 +108,36 @@
                         </button>
                     </form>
 
+                    <div id="test">
+
+                    </div>
+
+                    <div class="join rounded-box hidden" id="error-msg-dialog">
+                        <div class="join-item flex flex-col py-2 px-4 bg-base-200">
+                            <h3 class="text-error font-bold">Error</h3>
+                            <span class="text-sm" id="error-msg"></span>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
 
 </body>
+<script>
+    let errorDialog = document.querySelector("#error-msg-dialog")
+
+    document.body.addEventListener("authResponse", (event) => {
+        if (event.detail.error) {
+            errorDialog.querySelector("span").textContent = event.detail.error
+            errorDialog.classList.remove("hidden")
+            return
+        }
+    })
+
+    function hideDialogs() {
+        errorDialog.classList.add("hidden")
+    }
+</script>
 
 </html>
