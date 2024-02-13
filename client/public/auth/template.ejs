@@ -9,12 +9,16 @@
     <link rel="stylesheet" href="/tailwind.css">
     <link rel="stylesheet" href="/auth/googleAuth.css">
 
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+        integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+        crossorigin="anonymous"></script>
+
 </head>
 
 <body>
 
     <% let title, subTitle, linkText, linkHref, googleText, confirmPasswordElementClass, submitBtnText; if
-        (type==="login" ){ title="Login" ; subTitle="Don't have an account?" ; linkText="Register" ;
+        (type==="login" ) { title="Login" ; subTitle="Don't have an account?" ; linkText="Register" ;
         linkHref="/auth/signup" ; googleText="Log in with Google" ; confirmPasswordElementClass="hidden" ;
         submitBtnText="Login" ; } else { title="Create an account" ; subTitle="Already have an account?" ;
         linkText="Log in" ; linkHref="/auth/login" ; googleText="Create with Google" ; confirmPasswordElementClass="" ;
@@ -36,7 +40,7 @@
                             </a>
                     </span>
 
-                    <button class="gsi-material-button">
+                    <button class="gsi-material-button" onclick="window.location.href='/auth/google'">
                         <div class="gsi-material-button-state"></div>
                         <div class="gsi-material-button-content-wrapper">
                             <div class="gsi-material-button-icon">
@@ -60,48 +64,48 @@
                             <span class="gsi-material-button-contents">
                                 <%= googleText %>
                             </span>
-                            <span style="display: none;">
-                                <%= googleText %>
-                            </span>
                         </div>
                     </button>
 
                     <div class="divider my-0">OR</div>
 
-                    <label class="form-control">
-                        <div class="label">
-                            <span class="label-text">Email</span>
-                        </div>
-                        <input class="input input-bordered" />
-                    </label>
-
-                    <label class="form-control">
-                        <div class="label">
-                            <span class="label-text">Password</span>
-                        </div>
-                        <input type="password" class="input input-bordered" />
-                    </label>
-
-                    <label class="form-control <%= confirmPasswordElementClass %>">
-                        <div class="label">
-                            <span class="label-text">Confirm password</span>
-                        </div>
-                        <input type="password" class="input input-bordered" />
-                    </label>
-
-                    <div class="form-control">
-                        <label class="cursor-pointer label self-start gap-2">
-                            <input type="checkbox" class="checkbox" />
-                            <span class="label-text">
-                                I accept the
-                                <a class="link link-accent">Terms and Conditions</a>
-                            </span>
+                    <form action="/auth/login" method="POST">
+                        <label class="form-control">
+                            <div class="label">
+                                <span class="label-text">Email</span>
+                            </div>
+                            <input name="username" class="input input-bordered" />
                         </label>
-                    </div>
 
-                    <button class="btn btn-primary">
-                        <%= submitBtnText %>
-                    </button>
+                        <label class="form-control">
+                            <div class="label">
+                                <span class="label-text">Password</span>
+                            </div>
+                            <input name="password" type="password" class="input input-bordered" />
+                        </label>
+
+                        <label class="form-control <%= confirmPasswordElementClass %>">
+                            <div class="label">
+                                <span class="label-text">Confirm password</span>
+                            </div>
+                            <input name="confirm_password" type="password" class="input input-bordered" />
+                        </label>
+
+                        <div class="form-control">
+                            <label class="cursor-pointer label self-start gap-2">
+                                <input type="checkbox" class="checkbox" />
+                                <span class="label-text">
+                                    I accept the
+                                    <a class="link link-accent">Terms and Conditions</a>
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <%= submitBtnText %>
+                        </button>
+                    </form>
+
                 </div>
             </div>
 
