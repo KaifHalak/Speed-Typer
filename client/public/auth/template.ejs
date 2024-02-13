@@ -76,14 +76,14 @@
                             <div class="label">
                                 <span class="label-text">Email</span>
                             </div>
-                            <input name="email" class="input input-bordered" />
+                            <input name="email" type="email" class="input input-bordered" />
                         </label>
 
                         <label class="form-control">
                             <div class="label">
                                 <span class="label-text">Password</span>
                             </div>
-                            <input name="password" type="password" class="input input-bordered" />
+                            <input name="password" type="password" minlength="6" class="input input-bordered" />
                         </label>
 
                         <label class="form-control <%= confirmPasswordElementClass %>">
@@ -95,7 +95,7 @@
 
                         <div class="form-control">
                             <label class="cursor-pointer label self-start gap-2">
-                                <input name="termsAndConditions" type="checkbox" class="checkbox" />
+                                <input name="termsAndConditions" required type="checkbox" class="checkbox" />
                                 <span class="label-text">
                                     I accept the
                                     <a class="link link-accent">Terms and Conditions</a>
