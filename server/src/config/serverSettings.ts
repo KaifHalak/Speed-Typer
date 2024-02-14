@@ -5,6 +5,8 @@ import path from "path"
 import passport from "passport"
 const expressSession = require("express-session")
 
+import { startServer } from "../utils/database"; 
+
 const EJS_PATH = path.join(__dirname, "../", "../","../", "client", "public")
 const STATIC_FILES_PATH = express.static(path.join(__dirname, "../","../", "../", "client", "public"))
 
@@ -56,8 +58,15 @@ app.use(cors())
 
 let PORT = process.env.PORT || 3000
 
-server.listen(PORT, () => {
+async function main(){
+  await startServer()
+}
+
+main()
+.then(() => {
+  server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
   });
+})
 
 export default app

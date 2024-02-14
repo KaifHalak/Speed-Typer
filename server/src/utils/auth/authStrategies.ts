@@ -3,16 +3,14 @@ import { Strategy as LocalStrategy } from "passport-local"
 import { Profile } from "passport"
 
 import { Request } from "express"; 
-import path from "path";
-import env from "dotenv"
-env.config({path: path.join(__dirname, "../", "../", ".env")})
+import { envGet } from "../env";
 
 import { validateEmail, validatePassword, validateTermsAndConditions } from "./helperFunctions"; 
 
 // Google
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!
+const GOOGLE_CLIENT_ID = envGet("GOOGLE_CLIENT_ID")!
+const GOOGLE_CLIENT_SECRET = envGet("GOOGLE_CLIENT_SECRET")!
 const GOOGLE_CALLBACK_URL = "/auth/google/callback"
 
 export const googleStrategy = new GoogleStrategy({
@@ -28,13 +26,9 @@ export const googleStrategy = new GoogleStrategy({
 
 // Local (Email and Password)
 
-export const localStrategy = new LocalStrategy({ passReqToCallback: true, usernameField:"email" }, (req: Request, username: string, password: string, done: VerifyCallback) => {
-    // TODO: Add user verification from DB
-    if (req.url === "/login"){
-
+export const localStrategy = new LocalStrategy({ passReqToCallback: true, usernameField:"email" }, (req: Request, username: string, pass: string, done: VerifyCallback) => {
       let { email, password, termsAndConditions } = req.body
       
-      
       let validationOutcome: string | Boolean
 
       validationOutcome = validateEmail(email)
@@ -53,37 +47,19 @@ export const localStrategy = new LocalStrategy({ passReqToCallback: true, userna
       }
 
 
-      return done(null, {userId: 1})
+  // TODO: Add user verification from DB
+      if (req.url === "/signup") {
+          //TODO: signup
 
-    } else if (req.url === "/signup") {
-      //TODO: signup
+          let { confirmPassword } = req.body
 
-      let { email, password, confirmPassword, termsAndConditions } = req.body
-      
-      let validationOutcome: string | Boolean
+          if (password !== confirmPassword){
+            return done("Passwords must match.", undefined)
+          } 
 
-      validationOutcome = validateEmail(email)
-      if (typeof validationOutcome === "string" ){
-        return done(validationOutcome, undefined)
       }
 
-      validationOutcome = validatePassword(password)
-      if (typeof validationOutcome === "string" ){
-        return done(validationOutcome, undefined)
-      }
-
-      if (password !== confirmPassword){
-        return done("Passwords must match.", undefined)
-      }
-
-      validationOutcome = validateTermsAndConditions(termsAndConditions)
-      if (typeof validationOutcome === "string" ){
-        return done(validationOutcome, undefined)
-      }
-
-      return done(null, {userId: 1})
-
-    }
+    return done(null, {userId: 1})
 })
 
 
