@@ -3,19 +3,20 @@ const UI = {
     blurOverlay: document.querySelector("#blurOverlay") as HTMLDivElement,
 }
 
+let currentCharIndex = 0
 let startTypingFlag: Boolean = false
-let currentIndex = 0
 const excludedKeys = ["Shift", "Control", "Alt"]
 
-const text = "<%= text %>";
-const allTextChar = document.querySelectorAll("#textChar")
+let allLetters = document.querySelectorAll("#textChar")
+allLetters[currentCharIndex].classList.add("text-highlight")
 
-allTextChar[currentIndex].classList.add("text-highlight")
+let startTime: number
+let endTime: number
+let incorrectChar = 0
 
-document.body.addEventListener("keydown", (e: KeyboardEvent) => {
-
-    if (!startTypingFlag){
-        RemoveBlur()
+function startTyping(e: KeyboardEvent){
+    if (!startTypingFlag || currentCharIndex == allLetters.length){
+        removeBlur()
         return
     }
 
@@ -23,58 +24,114 @@ document.body.addEventListener("keydown", (e: KeyboardEvent) => {
         return
     }
 
-    if (e.key === "Backspace" && currentIndex >= 0){
+    if (e.key === "Backspace" && currentCharIndex >= 0){
+        return backSpace()
+    }
 
-        if (currentIndex === 0){
-            return
+    if (e.key == allLetters[currentCharIndex].textContent){
+        isIncorrectChar(false)
+    } else {
+        isIncorrectChar(true)
+        incorrectChar++
+    }
+
+    allLetters[currentCharIndex].classList.remove("text-highlight")
+
+    currentCharIndex++
+
+    if (currentCharIndex == allLetters.length){
+        endTyping()
+        return
+    }
+
+    allLetters[currentCharIndex].classList.add("text-highlight")
+    
+
+}
+function backSpace(){
+    if (currentCharIndex === 0){
+            return 
         }
 
-        let textCharClassList = allTextChar[currentIndex - 1].classList
-
+        let textCharClassList = allLetters[currentCharIndex - 1].classList
         if (textCharClassList.contains("incorrectColor")){
             textCharClassList.remove("incorrectColor")
         } else {
             textCharClassList.remove("correctColor")
         }
 
-        allTextChar[currentIndex].classList.remove("text-highlight")
-        allTextChar[currentIndex - 1].classList.add("text-highlight")
 
-        currentIndex--
-        return
-    } 
+        textCharClassList.add("text-highlight")
+        allLetters[currentCharIndex].classList.remove("text-highlight")
 
- 
-    if (e.key == text[currentIndex]){
-        isIncorrectChar(false)
+        currentCharIndex--
+}
+function isIncorrectChar(flag: boolean){
+    if (flag){
+        allLetters[currentCharIndex].classList.add("incorrectColor")
     } else {
-        isIncorrectChar(true)
+        allLetters[currentCharIndex].classList.add("correctColor")
     }
 
-    allTextChar[currentIndex].classList.remove("text-highlight")
-    allTextChar[currentIndex + 1].classList.add("text-highlight")
-    currentIndex++
+}
+
+
+function endTyping(){
+    document.body.removeEventListener("keydown", startTyping)
+
+    endTime = Date.now()
     
-})
+    let durationInMin = (endTime - startTime) / 60000
+
+    // WPM exlcuding errors
+    let grossWPM = allLetters.length / durationInMin
+
+    // Excluding corrected errors
+    let incorrectLetters = document.querySelectorAll(".incorrectColor").length
+    let errorRate = incorrectLetters / durationInMin
+
+    // WPM including errors
+    let netWPM = grossWPM - errorRate
+
+    // Including corrected errors
+    let correctEntries = allLetters.length - incorrectChar
+    let accuracy = (correctEntries / allLetters.length) * 100
+
+    let result = {
+        grossWPM,
+        netWPM,
+        accuracy
+    }
+
+
+}
+
+
+function resetVariables(){
+    currentCharIndex = 0
+    incorrectChar = 0
+    startTypingFlag = false
+
+    // Get new text
+    allLetters = document.querySelectorAll("#textChar")
+    allLetters[currentCharIndex].classList.add("text-highlight")
+
+    document.body.addEventListener("keydown", startTyping)
+}
+
 
 UI.blurOverlay.addEventListener('click', () => {
-    RemoveBlur()
+    removeBlur()
 })
 
-function RemoveBlur(){
+function removeBlur(){
     UI.blurOverlay.classList.add("hidden")
     UI.textSection.classList.remove("blur-sm")
     startTypingFlag = true
+    startTime = Date.now()
 }
 
-function isIncorrectChar(flag: boolean){
-    if (!flag){
-        allTextChar[currentIndex].classList.add("incorrectColor")
-    } else {
-        allTextChar[currentIndex].classList.add("correctColor")
-    }
-
-}
+document.body.addEventListener("keydown", startTyping)
 
 
 

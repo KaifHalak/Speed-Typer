@@ -3,61 +3,99 @@ const UI = {
     textSection: document.querySelector("#textSection"),
     blurOverlay: document.querySelector("#blurOverlay"),
 };
+let currentCharIndex = 0;
 let startTypingFlag = false;
-let currentIndex = 0;
 const excludedKeys = ["Shift", "Control", "Alt"];
-let text = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius libero quae, reprehenderit optio quam suscipit quidem possimus debitis ut ipsum. Maxime natus molestiae, tempore quas explicabo dolore qui officiis rem!";
-let formattedText = text.split("").map((char) => `<span id='textChar' class='py-1'>${char}</span>`).join("");
-UI.textSection.innerHTML = formattedText;
-const allTextChar = document.querySelectorAll("#textChar");
-allTextChar[currentIndex].classList.add("text-highlight");
-document.body.addEventListener("keydown", (e) => {
-    if (!startTypingFlag) {
-        RemoveBlur();
+let allLetters = document.querySelectorAll("#textChar");
+allLetters[currentCharIndex].classList.add("text-highlight");
+let startTime;
+let endTime;
+let incorrectChar = 0;
+function startTyping(e) {
+    if (!startTypingFlag || currentCharIndex == allLetters.length) {
+        removeBlur();
         return;
     }
     if (excludedKeys.includes(e.key)) {
         return;
     }
-    if (e.key === "Backspace" && currentIndex >= 0) {
-        if (currentIndex === 0) {
-            return;
-        }
-        let textCharClassList = allTextChar[currentIndex - 1].classList;
-        if (textCharClassList.contains("incorrectColor")) {
-            textCharClassList.remove("incorrectColor");
-        }
-        else {
-            textCharClassList.remove("correctColor");
-        }
-        allTextChar[currentIndex].classList.remove("text-highlight");
-        allTextChar[currentIndex - 1].classList.add("text-highlight");
-        currentIndex--;
-        return;
+    if (e.key === "Backspace" && currentCharIndex >= 0) {
+        return backSpace();
     }
-    if (e.key == text[currentIndex]) {
+    if (e.key == allLetters[currentCharIndex].textContent) {
         isIncorrectChar(false);
     }
     else {
         isIncorrectChar(true);
+        incorrectChar++;
     }
-    allTextChar[currentIndex].classList.remove("text-highlight");
-    allTextChar[currentIndex + 1].classList.add("text-highlight");
-    currentIndex++;
-});
+    allLetters[currentCharIndex].classList.remove("text-highlight");
+    currentCharIndex++;
+    if (currentCharIndex == allLetters.length) {
+        endTyping();
+        return;
+    }
+    allLetters[currentCharIndex].classList.add("text-highlight");
+}
+function backSpace() {
+    if (currentCharIndex === 0) {
+        return;
+    }
+    let textCharClassList = allLetters[currentCharIndex - 1].classList;
+    if (textCharClassList.contains("incorrectColor")) {
+        textCharClassList.remove("incorrectColor");
+    }
+    else {
+        textCharClassList.remove("correctColor");
+    }
+    textCharClassList.add("text-highlight");
+    allLetters[currentCharIndex].classList.remove("text-highlight");
+    currentCharIndex--;
+}
+function isIncorrectChar(flag) {
+    if (flag) {
+        allLetters[currentCharIndex].classList.add("incorrectColor");
+    }
+    else {
+        allLetters[currentCharIndex].classList.add("correctColor");
+    }
+}
+function endTyping() {
+    document.body.removeEventListener("keydown", startTyping);
+    endTime = Date.now();
+    let durationInMin = (endTime - startTime) / 60000;
+    // WPM exlcuding errors
+    let grossWPM = allLetters.length / durationInMin;
+    // Excluding corrected errors
+    let incorrectLetters = document.querySelectorAll(".incorrectColor").length;
+    let errorRate = incorrectLetters / durationInMin;
+    // WPM including errors
+    let netWPM = grossWPM - errorRate;
+    // Including corrected errors
+    let correctEntries = allLetters.length - incorrectChar;
+    let accuracy = (correctEntries / allLetters.length) * 100;
+    let result = {
+        grossWPM,
+        netWPM,
+        accuracy
+    };
+}
+function resetVariables() {
+    currentCharIndex = 0;
+    incorrectChar = 0;
+    startTypingFlag = false;
+    // Get new text
+    allLetters = document.querySelectorAll("#textChar");
+    allLetters[currentCharIndex].classList.add("text-highlight");
+    document.body.addEventListener("keydown", startTyping);
+}
 UI.blurOverlay.addEventListener('click', () => {
-    RemoveBlur();
+    removeBlur();
 });
-function RemoveBlur() {
+function removeBlur() {
     UI.blurOverlay.classList.add("hidden");
     UI.textSection.classList.remove("blur-sm");
     startTypingFlag = true;
+    startTime = Date.now();
 }
-function isIncorrectChar(flag) {
-    if (!flag) {
-        allTextChar[currentIndex].classList.add("incorrectColor");
-    }
-    else {
-        allTextChar[currentIndex].classList.add("correctColor");
-    }
-}
+document.body.addEventListener("keydown", startTyping);

@@ -14,6 +14,7 @@
 
 <body>
 
+
     <div class="w-full h-full px-14">
 
         <!-- Navbar -->
@@ -42,7 +43,7 @@
                     id="textSection">
                     <% let formattedText=text.split("").map(char=> `<span id='textChar'
                             class='py-1'>${char}</span>`).join(""); %>
-                        <%= formattedText %>
+                        <%- formattedText %>
                 </div>
 
             </div>
