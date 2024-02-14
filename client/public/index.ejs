@@ -15,7 +15,7 @@
 <body>
 
 
-    <div class="w-full h-full px-14">
+    <div class="w-full h-full px-32">
 
         <!-- Navbar -->
 
@@ -33,11 +33,40 @@
             </div>
         </div>
 
+        <!-- Live Stats -->
+
+        <div class="flex flex-row justify-between">
+
+            <!-- Live WPM -->
+
+            <div class="stats shadow">
+
+                <div class="stat place-items-center">
+                    <div class="stat-title">WPM</div>
+                    <div class="stat-value" id="live-gross-wpm">0</div>
+                    <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
+                </div>
+
+            </div>
+
+            <!-- Time Elapsed -->
+
+            <div class="stats shadow">
+
+                <div class="stat place-items-center">
+                    <div class="stat-value" id="timer">0s</div>
+                    <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
+                </div>
+
+            </div>
+
+        </div>
+
         <!-- Typing Area -->
 
-        <div class="relative w-full h-full">
+        <div class="relative w-full h-[500px]">
 
-            <div class="relative mockup-window border border-base-300 ">
+            <div class="relative mockup-window border border-base-300 h-full">
 
                 <div class="cursor-pointer blur-sm p-5 border-t border-base-300 resize-none text-2xl text-gray-400"
                     id="textSection">
@@ -54,6 +83,45 @@
             </div>
 
         </div>
+
+
+        <!-- Open the modal using ID.showModal() method -->
+
+        <dialog id="results-modal" class="modal" checked="true">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Results</h3>
+                <!-- <p class="py-4">Press ESC key or click the button below to close</p> -->
+
+                <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                    <div class="stat">
+                        <div class="stat-title">Gross WPM</div>
+                        <div class="stat-value" id="gross-wpm"></div>
+                        <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Net WPM</div>
+                        <div class="stat-value" id="net-wpm"></div>
+                        <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Accurcay</div>
+                        <div class="stat-value" id="accuracy"></div>
+                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                    </div>
+
+                </div>
+
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn" onclick="resetVariablesForRetry(); this.blur()">Retry</button>
+                    </form>
+                </div>
+
+            </div>
+        </dialog>
 
     </div>
 
