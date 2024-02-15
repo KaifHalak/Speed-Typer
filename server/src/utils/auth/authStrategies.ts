@@ -36,14 +36,14 @@ export const googleStrategy = new GoogleStrategy({
     
     let { sub: userId, email, email_verified: emailVerified, name: username, picture: pictureURL } = extendedProfile._json
     let userData = {userId, username, pictureURL}
-
+    
     // Check if user already exists
     let userDocument = await userModel.findOne({_id: userId})
 
     // If user does not exist, add to DB
     // TODO: why are the types not showing here?
     if (!userDocument){
-      await userModel.create({_id: userId ,username, email, pictureURL})
+      await userModel.create({_id: userId ,username, email, pictureURL, provider: profile.provider})
     }
 
     done(null, userData)

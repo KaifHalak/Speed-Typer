@@ -6,8 +6,9 @@ interface userSchemaI {
     username: string,
     email: string
     password: string,
-    highScore: highScoreSchemaI,
-    pictureURL: string
+    highScore?: highScoreSchemaI,
+    pictureURL?: string,
+    provider?: string
 }
 
 interface highScoreSchemaI {
@@ -62,6 +63,10 @@ let userSchema = new mongoose.Schema<userSchemaI>({
         required: false
     },
     pictureURL: {
+        type: String,
+        required: false
+    },
+    provider: {
         type: String,
         required: false
     }

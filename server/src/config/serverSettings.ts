@@ -14,12 +14,14 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(expressSession({
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: false
+  },
   secret: ["key 1"],
   name:"speedTyperSession",
-  maxAge: 24 * 60 * 60 * 1000,
-  sameSite: true,
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: new expressSession.MemoryStore()
 }))
 

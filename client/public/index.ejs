@@ -28,7 +28,19 @@
             </div>
             <div class="flex-none">
                 <ul class="menu menu-horizontal px-1">
-                    <a class="btn" onclick="window.location.href='/auth/login'">Account</a>
+
+                    <div class="items-center">
+                        <!-- add username if needed -->
+                        <div class="avatar placeholder cursor-pointer" onclick="window.location.href='/auth/login'">
+                            <div class="bg-neutral text-neutral-content rounded-full w-12">
+                                
+                                <img src="<%= pictureURL %>" alt="">
+
+                            </div>
+                        </div>
+                    </div>
+
+
                 </ul>
             </div>
         </div>
