@@ -5,7 +5,7 @@ import path from "path"
 import passport from "passport"
 const expressSession = require("express-session")
 
-import { startDBServer } from "../utils/database"; 
+import { startDBServer } from "../utils/database/main"; 
 
 const EJS_PATH = path.join(__dirname, "../", "../","../", "client", "public")
 const STATIC_FILES_PATH = express.static(path.join(__dirname, "../","../", "../", "client", "public"))

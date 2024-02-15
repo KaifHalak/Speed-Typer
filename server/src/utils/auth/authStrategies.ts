@@ -43,7 +43,8 @@ export const googleStrategy = new GoogleStrategy({
     // If user does not exist, add to DB
     // TODO: why are the types not showing here?
     if (!userDocument){
-      await userModel.create({_id: userId ,username, email, pictureURL, provider: profile.provider})
+
+      await userModel.create({_id: userId ,username, email, pictureURL, provider: profile.provider, highScore: {}})
     }
 
     done(null, userData)

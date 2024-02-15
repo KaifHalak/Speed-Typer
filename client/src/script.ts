@@ -8,7 +8,9 @@ const UI = {
     accuracyText: document.querySelector("#accuracy") as HTMLDivElement,
 
     liveWPMValue: document.querySelector("#live-gross-wpm") as HTMLDivElement,
-    liveTimerValue: document.querySelector("#timer") as HTMLDivElement
+    liveTimerValue: document.querySelector("#timer") as HTMLDivElement,
+
+    highScoreValue: document.querySelector("#high-score") as HTMLDivElement
 }
 
 let startTime: number
@@ -111,6 +113,36 @@ function endTyping(){
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%"
     
     UI.resultsModal.showModal()
+
+    if (netWPM > Number(UI.highScoreValue.textContent)){
+        UI.highScoreValue.textContent = Math.round(netWPM).toString()
+
+        // TODO: prevent highscore manipulation when sending it to server
+        let url = "/user/update-highscore"
+        fetch(url, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({newHighScore: Math.round(netWPM)})
+        })
+        .then((res) => {
+            if (!res.ok){
+                // throw some error
+                return
+            }
+
+            return res.json()
+        })
+        .then((payload) => {
+            // tell user that the highscore has been updated
+        })
+        .catch(error => {
+            // Handle any errors that occur during the fetch operation
+            // console.error('There was a problem with the fetch operation:', error);
+        });
+
+    }
+
+    
 
 }
 

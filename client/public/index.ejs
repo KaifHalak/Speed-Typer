@@ -33,7 +33,7 @@
                         <!-- add username if needed -->
                         <div class="avatar placeholder cursor-pointer" onclick="window.location.href='/auth/login'">
                             <div class="bg-neutral text-neutral-content rounded-full w-12">
-                                
+
                                 <img src="<%= pictureURL %>" alt="">
 
                             </div>
@@ -49,13 +49,21 @@
 
         <div class="flex flex-row justify-between">
 
-            <!-- Live WPM -->
+            <!-- Live WPM and Highscore -->
 
             <div class="stats shadow">
 
                 <div class="stat place-items-center">
                     <div class="stat-title">WPM</div>
                     <div class="stat-value" id="live-gross-wpm">0</div>
+                    <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
+                </div>
+
+                <div class="stat place-items-center">
+                    <div class="stat-title">High Score</div>
+                    <div class="stat-value" id="high-score">
+                        <%= highScore %>
+                    </div>
                     <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
                 </div>
 

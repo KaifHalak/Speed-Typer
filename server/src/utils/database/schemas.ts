@@ -6,15 +6,16 @@ interface userSchemaI {
     username: string,
     email: string
     password: string,
-    highScore?: highScoreSchemaI,
-    pictureURL?: string,
-    provider?: string
+    highScore: highScoreSchemaI,
+    pictureURL: string,
+    provider: string
 }
 
 interface highScoreSchemaI {
         text: string,
         wpm: Number,
-        dateAchieved: Date
+        dateAchieved: Date,
+        _id?: Number
 }
 
 // ==== User Schema ==== 
@@ -22,16 +23,19 @@ interface highScoreSchemaI {
 let highScoreSchema = new mongoose.Schema<highScoreSchemaI>({
     text: {
         type: String,
-        required: true
+        default: ""
     },
     wpm: {
         type: Number,
-        required: true
+        default: 0
     },
     dateAchieved: {
         type: Date,
         default: Date.now,
-        required: true
+    },
+    _id: {
+        type: String,
+        required: false
     }
 })
 
@@ -60,15 +64,15 @@ let userSchema = new mongoose.Schema<userSchemaI>({
     },
     highScore: {
         type: highScoreSchema,
-        required: false
+        required: true
     },
     pictureURL: {
         type: String,
-        required: false
+        default: ""
     },
     provider: {
         type: String,
-        required: false
+        default: ""
     }
 });
 
