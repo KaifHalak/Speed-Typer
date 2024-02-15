@@ -13,8 +13,9 @@ interface userSchemaI {
 
 interface highScoreSchemaI {
         text: string,
-        wpm: Number,
+        netWPM: Number,
         dateAchieved: Date,
+        accuracy: Number
         _id?: Number
 }
 
@@ -25,13 +26,17 @@ let highScoreSchema = new mongoose.Schema<highScoreSchemaI>({
         type: String,
         default: ""
     },
-    wpm: {
+    netWPM: {
         type: Number,
         default: 0
     },
     dateAchieved: {
         type: Date,
         default: Date.now,
+    },
+    accuracy: {
+        type: Number,
+        default: 0
     },
     _id: {
         type: String,

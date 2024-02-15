@@ -10,7 +10,9 @@ const UI = {
     liveWPMValue: document.querySelector("#live-gross-wpm") as HTMLDivElement,
     liveTimerValue: document.querySelector("#timer") as HTMLDivElement,
 
-    highScoreValue: document.querySelector("#high-score") as HTMLDivElement
+    highScoreValue: document.querySelector("#high-score") as HTMLDivElement,
+
+    hiddenFullText: document.querySelector("#hidden-full-text") as HTMLDivElement
 }
 
 let startTime: number
@@ -115,30 +117,7 @@ function endTyping(){
     UI.resultsModal.showModal()
 
     if (netWPM > Number(UI.highScoreValue.textContent)){
-        UI.highScoreValue.textContent = Math.round(netWPM).toString()
-
-        // TODO: prevent highscore manipulation when sending it to server
-        let url = "/user/update-highscore"
-        fetch(url, {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({newHighScore: Math.round(netWPM)})
-        })
-        .then((res) => {
-            if (!res.ok){
-                // throw some error
-                return
-            }
-
-            return res.json()
-        })
-        .then((payload) => {
-            // tell user that the highscore has been updated
-        })
-        .catch(error => {
-            // Handle any errors that occur during the fetch operation
-            // console.error('There was a problem with the fetch operation:', error);
-        });
+       updateHighScore(netWPM, accuracy)
 
     }
 
@@ -226,6 +205,37 @@ function updateLiveTimer(){
     let currentValue = parseInt(UI.liveTimerValue.textContent!);
     currentValue++;
     UI.liveTimerValue.textContent =  currentValue.toString() + "s"
+}
+
+function updateHighScore(netWPM: number, accuracy: number){
+     UI.highScoreValue.textContent = Math.round(netWPM).toString()
+
+    let payload = JSON.stringify({newHighScore: Math.round(netWPM),
+                 accuracy: Math.round(accuracy),
+                    text: UI.hiddenFullText.textContent!.trim()})
+
+        // TODO: prevent highscore manipulation when sending it to server
+        let url = "/user/update-highscore"
+        fetch(url, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: payload
+        })
+        .then((res) => {
+            if (!res.ok){
+                // throw some error
+                return
+            }
+
+            return res.json()
+        })
+        .then((payload) => {
+            // tell user that the highscore has been updated
+        })
+        .catch(error => {
+            // Handle any errors that occur during the fetch operation
+            // console.error('There was a problem with the fetch operation:', error);
+        });
 }
 
 

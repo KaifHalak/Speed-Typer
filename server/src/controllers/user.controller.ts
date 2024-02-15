@@ -17,7 +17,7 @@ export async function POSTUpdateHighScore(req: Request, res: Response, next: Nex
     }
 
     const userData = req.user as UserI 
-    let newHighScore: number = req.body.newHighScore
-    let outcome = await updateUserHighscoreValue(userData.userId, newHighScore)
+    let  { accuracy, newHighScore, text} = req.body
+    let outcome = await updateUserHighscoreValue(userData.userId, newHighScore, accuracy, text)
     res.send({status: outcome})
 }

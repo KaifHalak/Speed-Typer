@@ -15,13 +15,15 @@ export async function startDBServer(){
 export async function getUserHighscoreValue(userId: string){
     let document = await userModel.find({_id: userId}).select("highScore -_id")
     let highScore = document[0].highScore
-    return highScore.wpm
+    return highScore.netWPM
 }
 
-export async function updateUserHighscoreValue(userId: string, newHighScore: number){
+export async function updateUserHighscoreValue(userId: string, newHighScore: number, accuracy: number, text: string){
     let document = await userModel.find({_id: userId})
-    document[0].highScore.wpm = newHighScore
+    document[0].highScore.netWPM = newHighScore
     document[0].highScore.dateAchieved = new Date()
+    document[0].highScore.accuracy = accuracy
+    document[0].highScore.text = text
     await document[0].save()
     return true
 }

@@ -7,7 +7,9 @@ const UI = {
     netWPMText: document.querySelector("#net-wpm"),
     accuracyText: document.querySelector("#accuracy"),
     liveWPMValue: document.querySelector("#live-gross-wpm"),
-    liveTimerValue: document.querySelector("#timer")
+    liveTimerValue: document.querySelector("#timer"),
+    highScoreValue: document.querySelector("#high-score"),
+    hiddenFullText: document.querySelector("#hidden-full-text")
 };
 let startTime;
 let endTime;
@@ -83,6 +85,9 @@ function endTyping() {
     UI.netWPMText.textContent = Math.round(netWPM).toString();
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%";
     UI.resultsModal.showModal();
+    if (netWPM > Number(UI.highScoreValue.textContent)) {
+        updateHighScore(netWPM, accuracy);
+    }
 }
 function resetVariablesForRetry() {
     UI.liveWPMValue.textContent = "0";
@@ -139,4 +144,31 @@ function updateLiveTimer() {
     let currentValue = parseInt(UI.liveTimerValue.textContent);
     currentValue++;
     UI.liveTimerValue.textContent = currentValue.toString() + "s";
+}
+function updateHighScore(netWPM, accuracy) {
+    UI.highScoreValue.textContent = Math.round(netWPM).toString();
+    let payload = JSON.stringify({ newHighScore: Math.round(netWPM),
+        accuracy: Math.round(accuracy),
+        text: UI.hiddenFullText.textContent.trim() });
+    // TODO: prevent highscore manipulation when sending it to server
+    let url = "/user/update-highscore";
+    fetch(url, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: payload
+    })
+        .then((res) => {
+        if (!res.ok) {
+            // throw some error
+            return;
+        }
+        return res.json();
+    })
+        .then((payload) => {
+        // tell user that the highscore has been updated
+    })
+        .catch(error => {
+        // Handle any errors that occur during the fetch operation
+        // console.error('There was a problem with the fetch operation:', error);
+    });
 }
