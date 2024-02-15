@@ -5,7 +5,7 @@ import path from "path"
 import passport from "passport"
 const expressSession = require("express-session")
 
-import { startServer } from "../utils/database"; 
+import { startDBServer } from "../utils/database"; 
 
 const EJS_PATH = path.join(__dirname, "../", "../","../", "client", "public")
 const STATIC_FILES_PATH = express.static(path.join(__dirname, "../","../", "../", "client", "public"))
@@ -18,8 +18,8 @@ app.use(expressSession({
   name:"speedTyperSession",
   maxAge: 24 * 60 * 60 * 1000,
   sameSite: true,
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   store: new expressSession.MemoryStore()
 }))
 
@@ -59,7 +59,7 @@ app.use(cors())
 let PORT = process.env.PORT || 3000
 
 async function main(){
-  // await startServer()
+  await startDBServer()
 }
 
 main()

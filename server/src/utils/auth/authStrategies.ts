@@ -7,7 +7,20 @@ import { envGet } from "../env";
 
 import { validateEmail, validatePassword, validateTermsAndConditions } from "./helperFunctions"; 
 
+import { userModel } from "../database/schemas";
+
+
 // Google
+
+interface GoogleProfileI extends Profile {
+    _json: {
+      sub: string,
+      email: string,
+      email_verified: boolean,
+      name: string,
+      picture: string
+    }
+}
 
 const GOOGLE_CLIENT_ID = envGet("GOOGLE_CLIENT_ID")!
 const GOOGLE_CLIENT_SECRET = envGet("GOOGLE_CLIENT_SECRET")!
@@ -17,10 +30,23 @@ export const googleStrategy = new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: GOOGLE_CALLBACK_URL
-  }, (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
-        // TODO: verify / add user to DB
-        console.log(profile)
-        done(null, profile)
+  }, async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
+
+    let extendedProfile = profile as GoogleProfileI
+    
+    let { sub: userId, email, email_verified: emailVerified, name: username, picture: pictureURL } = extendedProfile._json
+    let userData = {userId, username, pictureURL}
+
+    // Check if user already exists
+    let userDocument = await userModel.findOne({_id: userId})
+
+    // If user does not exist, add to DB
+    // TODO: why are the types not showing here?
+    if (!userDocument){
+      await userModel.create({_id: userId ,username, email, pictureURL})
+    }
+
+    done(null, userData)
   })
 
 

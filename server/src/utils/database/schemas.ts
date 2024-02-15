@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 interface userSchemaI {
+    _id: string
     username: string,
+    email: string
     password: string,
-    highScore: highScoreSchemaI
+    highScore: highScoreSchemaI,
+    pictureURL: string
 }
 
 interface highScoreSchemaI {
@@ -31,20 +35,34 @@ let highScoreSchema = new mongoose.Schema<highScoreSchemaI>({
 })
 
 let userSchema = new mongoose.Schema<userSchemaI>({
+    _id: {
+        type: String,
+        default: uuidv4 
+    },
     username: {
         type: String,
         required: true,
         minlength: 3,
-        maxlength: 15,
-        match: /^[a-zA-Z0-9_.]*$/, // Allows only alphanumeric characters, dots, and underscores
+        maxlength: 30,
+        // match: /^[a-zA-Z0-9_.]*$/, // Allows only alphanumeric characters, dots, and underscores
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         minlength: 6
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ 
     },
     highScore: {
         type: highScoreSchema,
+        required: false
+    },
+    pictureURL: {
+        type: String,
         required: false
     }
 });

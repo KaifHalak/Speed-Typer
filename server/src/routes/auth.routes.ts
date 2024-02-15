@@ -1,8 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express"
-import path from "path"
 import passport from "passport"
 
-import { validateLocalAuth, validateGoogleAuth, GETLoginPage, GETSignupPage } from "../controllers/auth.controller" 
+import { validateLocalAuth, GETLoginPage, GETSignupPage } from "../controllers/localAuth.controller" 
 
 const authRouter = Router()
 
@@ -12,8 +11,8 @@ authRouter.get("/signup", GETSignupPage)
 authRouter.post('/login', validateLocalAuth);
 authRouter.post('/signup', validateLocalAuth);
 
-authRouter.get('/google', passport.authenticate('google', { scope: ['email'] }));
-authRouter.get('/google/callback', validateGoogleAuth);
+authRouter.get('/google', passport.authenticate('google', { scope: ['profile', "email"] }));
+authRouter.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login', successRedirect:"/", keepSessionInfo: true}));
 
 
 export default authRouter

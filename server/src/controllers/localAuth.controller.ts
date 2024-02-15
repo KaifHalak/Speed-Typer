@@ -36,7 +36,3 @@ export function validateLocalAuth(req: Request, res: Response, next: NextFunctio
         
     })(req, res, next);
 }
-
-export function validateGoogleAuth(req: Request, res: Response, next: NextFunction){
-    passport.authenticate('google', { failureRedirect: '/auth/login', successRedirect:"/", keepSessionInfo: true})
-}
