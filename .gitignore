@@ -2,4 +2,4 @@
 /client/src/tailwind.css
 .env
 temp.txt
-*.js
+*/*.js !tailwind.config.js

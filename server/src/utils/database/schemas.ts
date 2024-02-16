@@ -1,27 +1,31 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 
+// ==== User Schema ==== 
+
 interface userSchemaI {
     _id: string
     username: string,
     email: string
     password: string,
-    highScore: highScoreSchemaI,
+    highScore: userHighScoreSchemaI,
     pictureURL: string,
     provider: string
 }
 
-interface highScoreSchemaI {
+interface userHighScoreSchemaI {
         text: string,
         netWPM: Number,
         dateAchieved: Date,
         accuracy: Number
-        _id?: Number
+        _id: String
 }
 
-// ==== User Schema ==== 
-
-let highScoreSchema = new mongoose.Schema<highScoreSchemaI>({
+let userHighScoreSchema = new mongoose.Schema<userHighScoreSchemaI>({
+    _id: {
+        type: String,
+        default: uuidv4
+    },
     text: {
         type: String,
         default: ""
@@ -37,10 +41,6 @@ let highScoreSchema = new mongoose.Schema<highScoreSchemaI>({
     accuracy: {
         type: Number,
         default: 0
-    },
-    _id: {
-        type: String,
-        required: false
     }
 })
 
@@ -68,7 +68,7 @@ let userSchema = new mongoose.Schema<userSchemaI>({
         match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ 
     },
     highScore: {
-        type: highScoreSchema,
+        type: userHighScoreSchema,
         required: true
     },
     pictureURL: {
@@ -82,3 +82,41 @@ let userSchema = new mongoose.Schema<userSchemaI>({
 });
 
 export let userModel = mongoose.model<userSchemaI>("users", userSchema)
+
+
+// ==== Leaderboad Schema ====
+
+interface leaderBoardSchema extends userHighScoreSchemaI {
+    userId: String
+}
+
+let leaderBoardSchema = new mongoose.Schema<leaderBoardSchema>({
+    _id: {
+        type: String,
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true,
+        ref: userModel
+    },
+    text: {
+        type: String,
+        default: ""
+    },
+    netWPM: {
+        type: Number,
+        default: 0
+    },
+    dateAchieved: {
+        type: Date,
+        default: Date.now,
+    },
+    accuracy: {
+        type: Number,
+        default: 0
+    }
+})
+
+export let leaderBoardModel = mongoose.model<leaderBoardSchema>("leaderboards", leaderBoardSchema)
+

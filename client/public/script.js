@@ -82,6 +82,7 @@ function endTyping() {
     let correctEntries = allLetters.length - incorrectCharCount;
     let accuracy = (correctEntries / allLetters.length) * 100;
     UI.grossWPMText.textContent = Math.round(grossWPM).toString();
+    console.log(UI.netWPMText);
     UI.netWPMText.textContent = Math.round(netWPM).toString();
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%";
     UI.resultsModal.showModal();
