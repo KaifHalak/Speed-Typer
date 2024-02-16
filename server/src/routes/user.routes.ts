@@ -2,7 +2,9 @@ import { Router, Request, Response, NextFunction } from "express"
 
 const userRouter = Router()
 
-import { POSTUpdateHighScore } from "../controllers/user.controller"
+import { POSTUpdateHighScore, GETUserPlacement } from "../controllers/user.controller"
+
 userRouter.post("/update-highscore", POSTUpdateHighScore)
+userRouter.get("/placement", GETUserPlacement)
 
 export default userRouter

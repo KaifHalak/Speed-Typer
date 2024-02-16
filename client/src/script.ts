@@ -3,9 +3,9 @@ const UI = {
     blurOverlay: document.querySelector("#blurOverlay") as HTMLDivElement,
 
     resultsModal: document.querySelector("#results-modal") as HTMLDialogElement,
-    grossWPMText: document.querySelector("#gross-wpm") as HTMLDivElement,
-    netWPMText: document.querySelector("#net-wpm") as HTMLDivElement,
-    accuracyText: document.querySelector("#accuracy") as HTMLDivElement,
+    grossWPMText: document.querySelector("#results-modal #gross-wpm") as HTMLDivElement,
+    netWPMText: document.querySelector("#results-modal #net-wpm") as HTMLDivElement,
+    accuracyText: document.querySelector("#results-modal #accuracy") as HTMLDivElement,
 
     liveWPMValue: document.querySelector("#live-gross-wpm") as HTMLDivElement,
     liveTimerValue: document.querySelector("#timer") as HTMLDivElement,

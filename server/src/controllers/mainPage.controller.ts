@@ -1,6 +1,8 @@
+// TODO: Code clean up
+
 import { Request, Response, NextFunction } from "express"
 import path from "path"
-import { getUserHighscoreValue } from "../utils/database/main"
+import { getUserAllHighscoreDetails } from "../utils/database/main"
 
 // TODO: fix this type
 interface UserI {
@@ -14,14 +16,28 @@ let text = "Hello There"
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string = ""
-    let highScore: string = "Log In"
+    let highScoreDetails: highScoreDetailsI = {
+        netWPM: "Log In",
+        accuracy: null,
+        dateAchieved: new Date()
+    }
 
     const userData = req.user as UserI
 
     if (userData) {
         pictureURL = userData.pictureURL
-        highScore = (await getUserHighscoreValue(userData.userId)).toString()
+        highScoreDetails = await getUserAllHighscoreDetails(userData.userId)
     }
 
-    res.render(path.join(__dirname, "../", "../", "../", "client", "public", "index"), { text, pictureURL, highScore })
+    res.render(path.join(__dirname, "../", "../", "../", "client", "public", "index"), { text, pictureURL, highScoreDetails })
 }
+
+interface highScoreDetailsI {
+    netWPM: Number | String,
+    accuracy: Number | null,
+    dateAchieved: Date,
+}
+
+// let n = new Date()
+
+// n.toISOString()

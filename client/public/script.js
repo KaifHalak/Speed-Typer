@@ -3,9 +3,9 @@ const UI = {
     textSection: document.querySelector("#textSection"),
     blurOverlay: document.querySelector("#blurOverlay"),
     resultsModal: document.querySelector("#results-modal"),
-    grossWPMText: document.querySelector("#gross-wpm"),
-    netWPMText: document.querySelector("#net-wpm"),
-    accuracyText: document.querySelector("#accuracy"),
+    grossWPMText: document.querySelector("#results-modal #gross-wpm"),
+    netWPMText: document.querySelector("#results-modal #net-wpm"),
+    accuracyText: document.querySelector("#results-modal #accuracy"),
     liveWPMValue: document.querySelector("#live-gross-wpm"),
     liveTimerValue: document.querySelector("#timer"),
     highScoreValue: document.querySelector("#high-score"),
@@ -82,7 +82,6 @@ function endTyping() {
     let correctEntries = allLetters.length - incorrectCharCount;
     let accuracy = (correctEntries / allLetters.length) * 100;
     UI.grossWPMText.textContent = Math.round(grossWPM).toString();
-    console.log(UI.netWPMText);
     UI.netWPMText.textContent = Math.round(netWPM).toString();
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%";
     UI.resultsModal.showModal();
