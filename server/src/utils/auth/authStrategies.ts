@@ -52,6 +52,7 @@ export const googleStrategy = new GoogleStrategy({
 
 
 // Local (Email and Password)
+// Leave this here for now
 
 export const localStrategy = new LocalStrategy({ passReqToCallback: true, usernameField:"email" }, (req: Request, username: string, pass: string, done: VerifyCallback) => {
       let { email, password, termsAndConditions } = req.body

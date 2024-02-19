@@ -3,3 +3,4 @@
 .env
 temp.txt
 */*.js !tailwind.config.js
+/*/archives
