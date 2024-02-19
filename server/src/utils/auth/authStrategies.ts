@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local"
 import { Profile } from "passport"
 
 import { Request } from "express"; 
-import { envGet } from "../env";
+import envGet  from "../env";
 
 import { validateEmail, validatePassword, validateTermsAndConditions } from "./helperFunctions"; 
 

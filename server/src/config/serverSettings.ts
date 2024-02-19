@@ -1,10 +1,11 @@
-import express, { urlencoded }  from "express";
+import express from "express";
 import http from "http"
 import cors from "cors"
 import path from "path"
 import passport from "passport"
 const expressSession = require("express-session")
 
+import envGet from "../utils/env";
 import { startDBServer } from "../utils/database/main"; 
 
 const EJS_PATH = path.join(__dirname, "../", "../","../", "client", "public")
@@ -18,7 +19,7 @@ app.use(expressSession({
     maxAge: 24 * 60 * 60 * 1000,
     sameSite: false
   },
-  secret: ["key 1"],
+  secret: [envGet("SESSION_SECRET")],
   name:"speedTyperSession",
   resave: true,
   saveUninitialized: false,

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { envGet } from "../env";
+import envGet  from "../env";
 
 import { userModel, leaderBoardModel } from "./schemas";
 

@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from "express"
+import { Router } from "express"
 import passport from "passport"
 
 import { validateLocalAuth, GETLoginPage, GETSignupPage } from "../controllers/localAuth.controller" 

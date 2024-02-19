@@ -37,7 +37,3 @@ interface highScoreDetailsI {
     accuracy: Number | null,
     dateAchieved: Date,
 }
-
-// let n = new Date()
-
-// n.toISOString()
