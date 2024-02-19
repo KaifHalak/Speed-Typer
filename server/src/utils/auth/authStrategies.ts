@@ -44,7 +44,7 @@ export const googleStrategy = new GoogleStrategy({
     // TODO: why are the types not showing here?
     if (!userDocument){
 
-      await userModel.create({_id: userId ,username, email, pictureURL, provider: profile.provider, highScore: {}})
+      await userModel.create({_id: userId ,username, email, pictureURL, provider: profile.provider, highScoreDetails: {}})
     }
 
     done(null, userData)

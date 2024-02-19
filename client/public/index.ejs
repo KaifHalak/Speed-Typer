@@ -35,7 +35,7 @@
                         <div class="avatar placeholder cursor-pointer" onclick="auth_modal.showModal()">
                             <div class="bg-neutral text-neutral-content rounded-full w-12">
 
-                                <img src="<%= pictureURL %>" alt="">
+                                <img src="<%= pictureURL ? pictureURL : '' %>" alt="">
 
                             </div>
                         </div>
@@ -61,11 +61,12 @@
                     <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
                 </div>
 
-                <div class="stat place-items-center cursor-pointer" onclick="highscore_details_modal.showModal()"
+                <div class="stat place-items-center cursor-pointer"
+                    onclick="<%= highScoreDetails ? 'highscore_details_modal.showModal()' : 'auth_modal.showModal()' %>"
                     hx-get="/user/placement" hx-target="#highscore_details_modal #placement">
                     <div class="stat-title">High Score</div>
                     <div class="stat-value" id="high-score">
-                        <%= highScoreDetails.netWPM %>
+                        <%= highScoreDetails ? highScoreDetails.netWPM : 'Log In' %>
                     </div>
                     <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
                 </div>
@@ -159,7 +160,7 @@
                     <div class="stat">
                         <div class="stat-title">Net WPM</div>
                         <div class="stat-value" id="net-wpm">
-                            <%= highScoreDetails.netWPM %>
+                            <%= highScoreDetails ? highScoreDetails.netWPM : '' %>
                         </div>
                         <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
                     </div>
@@ -167,7 +168,7 @@
                     <div class="stat">
                         <div class="stat-title">Accurcay</div>
                         <div class="stat-value" id="accuracy">
-                            <%= highScoreDetails.accuracy %>%
+                            <%= highScoreDetails ? highScoreDetails.accuracy : '' %>%
                         </div>
                         <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
                     </div>
@@ -175,7 +176,7 @@
                     <div class="stat">
                         <div class="stat-title">Date Achieved</div>
                         <div class="stat-value" id="date-achieved">
-                            <%= highScoreDetails.dateAchieved.toLocaleDateString() %>
+                            <%= highScoreDetails ? highScoreDetails.dateAchieved.toLocaleDateString() : '' %>
                         </div>
                         <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
                     </div>
@@ -211,7 +212,7 @@
                 class="flex flex-col justify-center gap-4 p-6 m-auto w-full h-full md:max-w-md md:h-auto md:rounded-box">
 
                 <h1 class="text-3xl font-bold self-center">
-                    Authentication
+                    Sign Up / Sign In
                 </h1>
 
                 <div class="divider my-0"></div>

@@ -215,9 +215,9 @@ function updateHighScore(netWPM: number, accuracy: number){
                     text: UI.hiddenFullText.textContent!.trim()})
 
         // TODO: prevent highscore manipulation when sending it to server
-        let url = "/user/update-highscore"
+        let url = "/user/highscore"
         fetch(url, {
-            method: "POST",
+            method: "PATCH",
             headers: {'Content-Type': 'application/json'},
             body: payload
         })

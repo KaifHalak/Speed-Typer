@@ -8,7 +8,7 @@ interface userSchemaI {
     username: string,
     email: string
     password: string,
-    highScore: userHighScoreSchemaI,
+    highScoreDetails: userHighScoreSchemaI,
     pictureURL: string,
     provider: string
 }
@@ -67,7 +67,7 @@ let userSchema = new mongoose.Schema<userSchemaI>({
         unique: true,
         match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ 
     },
-    highScore: {
+    highScoreDetails: {
         type: userHighScoreSchema,
         required: true
     },
@@ -81,7 +81,7 @@ let userSchema = new mongoose.Schema<userSchemaI>({
     }
 });
 
-export let userModel = mongoose.model<userSchemaI>("users", userSchema)
+let userModel = mongoose.model<userSchemaI>("users", userSchema)
 
 
 // ==== Leaderboad Schema ====
@@ -118,5 +118,11 @@ let leaderBoardSchema = new mongoose.Schema<leaderBoardSchema>({
     }
 })
 
-export let leaderBoardModel = mongoose.model<leaderBoardSchema>("leaderboards", leaderBoardSchema)
+let leaderBoardModel = mongoose.model<leaderBoardSchema>("leaderboards", leaderBoardSchema)
+
+export {
+    userModel,
+    leaderBoardModel,
+    userHighScoreSchemaI
+}
 

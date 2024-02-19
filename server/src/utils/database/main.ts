@@ -13,27 +13,22 @@ export async function startDBServer(){
 
 // add DB error handling
 
-export async function getUserHighscoreValue(userId: string){
-    let document = await userModel.find({_id: userId}).select("highScore -_id")
-    let highScore = document[0].highScore
-    return highScore.netWPM
-}
-
-export async function getUserAllHighscoreDetails(userId: string){
-    let document = await userModel.find({_id: userId}).select("highScore -_id")
-    return document[0].highScore
+export async function getUserHighscoreDetails(userId: string){
+    let document = await userModel.find({_id: userId})
+    return document[0].highScoreDetails
 }
 
 export async function updateUserHighscoreValue(userId: string, newHighScore: number, accuracy: number, text: string){
     let document = (await userModel.find({_id: userId}))[0]
-    document.highScore.dateAchieved = new Date()
-    document.highScore.accuracy = accuracy
-    document.highScore.text = text
-    document.highScore.netWPM = newHighScore
 
-    // document.highScore.placement = (await sortLeaderboardHighscores()).findIndex(document => document.netWPM === newHighScore) + 1
+    let currentDate = new Date()
 
-    await updateLeaderboardHighscore(document.highScore._id, newHighScore, document.highScore.dateAchieved, accuracy, text, userId)
+    document.highScoreDetails.dateAchieved = currentDate
+    document.highScoreDetails.accuracy = accuracy
+    document.highScoreDetails.text = text
+    document.highScoreDetails.netWPM = newHighScore
+
+    await updateLeaderboardHighscore(document.highScoreDetails._id, newHighScore, currentDate, accuracy, text, userId)
 
     await document.save()
     return true
@@ -42,7 +37,6 @@ export async function updateUserHighscoreValue(userId: string, newHighScore: num
 export async function updateLeaderboardHighscore(highscoreId: String, newHighScore: number, dateAchieved: Date, accuracy: number, text: string, userId: String){
     let document = (await leaderBoardModel.find({_id: highscoreId}))[0]
     
-
     if (!document){
         document = await leaderBoardModel.create({ _id: highscoreId, userId: userId })
     }
@@ -60,7 +54,7 @@ export async function updateLeaderboardHighscore(highscoreId: String, newHighSco
 
 export async function getUserHighscorePlacement(userId: string){
 
-    let highscore = await getUserHighscoreValue(userId)
+    let highscore = (await userModel.find({_id: userId}))[0].highScoreDetails.netWPM
 
     let documents = await leaderBoardModel.find()
     documents = bubbleSort<typeof documents[0]>(documents)
@@ -71,9 +65,7 @@ export async function getUserHighscorePlacement(userId: string){
 }
 
 
-
 // TODO: use a more efficient algo and fix Types
-
 function bubbleSort<mongooseDocument extends {netWPM: Number}>(documents: mongooseDocument[]){
     let ascending = false
 
