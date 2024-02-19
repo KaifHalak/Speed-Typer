@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tail": "npx tailwindcss -i ./src/tailwind.css -o ./public/tailwind.css --watch",
+    "tail": "npx tailwindcss -i ./src/tailwind.css -o ./public/assets/tailwind.css --watch",
     "type": "tsc --watch",
     "build": "tailwind & typescript"
   },

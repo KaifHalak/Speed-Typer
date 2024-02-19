@@ -86,11 +86,11 @@ let userModel = mongoose.model<userSchemaI>("users", userSchema)
 
 // ==== Leaderboad Schema ====
 
-interface leaderBoardSchema extends userHighScoreSchemaI {
+interface leaderBoardSchemaI extends userHighScoreSchemaI {
     userId: String
 }
 
-let leaderBoardSchema = new mongoose.Schema<leaderBoardSchema>({
+let leaderBoardSchema = new mongoose.Schema<leaderBoardSchemaI>({
     _id: {
         type: String,
         required: true
@@ -118,7 +118,7 @@ let leaderBoardSchema = new mongoose.Schema<leaderBoardSchema>({
     }
 })
 
-let leaderBoardModel = mongoose.model<leaderBoardSchema>("leaderboards", leaderBoardSchema)
+let leaderBoardModel = mongoose.model<leaderBoardSchemaI>("leaderboards", leaderBoardSchema)
 
 export {
     userModel,

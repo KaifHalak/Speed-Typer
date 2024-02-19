@@ -64,6 +64,18 @@ export async function getUserHighscorePlacement(userId: string){
     return placement
 }
 
+export async function getLeaderboard(){
+    let documents = await leaderBoardModel.find()
+    .select("-_id -__v")
+    .populate({
+        path: "userId",
+        select: "pictureURL username -_id"
+    })
+    documents = bubbleSort<typeof documents[0]>(documents)
+    return documents
+}
+
+
 
 // TODO: use a more efficient algo and fix Types
 function bubbleSort<mongooseDocument extends {netWPM: Number}>(documents: mongooseDocument[]){

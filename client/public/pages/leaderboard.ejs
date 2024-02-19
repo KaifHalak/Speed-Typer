@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dim">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<link rel="stylesheet" href="/assets/tailwind.css">
+
+<body>
+
+    <div class="w-full h-full px-32">
+
+        <!-- Navbar -->
+
+        <div class="navbar bg-base-100">
+            <div class="flex-1">
+                <a href="/" class="btn btn-ghost text-xl">daisyUI</a>
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="/leaderboard">Leaderboard</a></li>
+                </ul>
+            </div>
+            <div class="flex-none">
+                <ul class="menu menu-horizontal px-1">
+
+                    <div class="items-center">
+                        <!-- add username if needed -->
+                        <div class="avatar placeholder cursor-pointer" onclick="auth_modal.showModal()">
+                            <div class="bg-neutral text-neutral-content rounded-full w-12">
+                                <img src="<%= pictureURL ? pictureURL : '' %>" alt="">
+                            </div>
+                        </div>
+                    </div>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <!-- head -->
+                <thead>
+                    <tr>
+                        <th class="text-center">Placement</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Net WPM</th>
+                        <th class="text-center">Accuracy</th>
+                        <th class="text-center">Date Achieved</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% leaderboardData.forEach(({userId, netWPM, accuracy, dateAchieved }, index)=> { %>
+                        <tr class="<%= index === 0 ? 'bg-base-200' : '' %>">
+                            <td class="text-center">
+                                <%= index + 1 %>
+                            </td>
+                            <td class="text-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar">
+                                        <div class="mask mask-squircle w-12 h-12">
+                                            <img src="<%= userId.pictureURL %>" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <%= userId.username %>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <%= netWPM %>
+                            </td>
+                            <td class="text-center">
+                                <%= accuracy %>
+                            </td>
+                            <td class="text-center">
+                                <%= dateAchieved.toLocaleDateString() %>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-ghost btn-xs">Play</button>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
