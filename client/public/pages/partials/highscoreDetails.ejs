@@ -1,0 +1,70 @@
+<dialog id="highscore_details_modal" class="modal">
+    <div class="modal-box w-fit max-w-5xl">
+
+        <h3 class="font-bold text-lg">Highscore</h3>
+
+        <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+            <% if (leaderboard) { %>
+                <div class="stat">
+
+                    <div class="flex flex-col justify-center items-center">
+
+                        <div class="bg-neutral text-neutral-content rounded-full w-12">
+                            <img src="<%= leaderboardUserPictureURL %>" alt="">
+                        </div>
+
+                        <div class="stat-title py-2">
+                            <%= leaderboardUserUsername %>
+                        </div>
+
+                    </div>
+
+                </div>
+                <% } %>
+
+
+                    <div class="stat">
+                        <div class="stat-title">Net WPM</div>
+                        <div class="stat-value" id="net-wpm">
+                            <%= netWPM %>
+                        </div>
+                        <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Accurcay</div>
+                        <div class="stat-value" id="accuracy">
+                            <%= accuracy %>%
+                        </div>
+                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Date Achieved</div>
+                        <div class="stat-value" id="date-achieved">
+                            <%= dateAchieved.toLocaleDateString() %>
+                        </div>
+                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Placement</div>
+                        <div class="stat-value" id="placement">
+                            <%= leaderboard ? placement : '' %>
+                        </div>
+                    </div>
+
+        </div>
+
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="this.blur()">✕</button>
+                <% if (!leaderboard) { %>
+                    <button class="btn" onclick="this.blur()">Play</button>
+                    <% } %>
+            </form>
+        </div>
+
+    </div>
+</dialog>

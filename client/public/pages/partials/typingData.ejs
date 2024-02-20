@@ -1,0 +1,42 @@
+<div class="flex flex-row justify-between">
+
+    <div>
+        <div class="stat place-items-center cursor-pointer"
+            onclick="<%= highScoreDetails ? 'highscore_details_modal.showModal()' : 'auth_modal.showModal()' %>"
+            <% !leaderboard ? 'hx-get="/user/placement" hx-target="#highscore_details_modal #placement"' : '' %> >
+
+
+            <div class="flex flex-row justify-center items-center">
+
+                <div
+                    class="bg-neutral text-neutral-content rounded-full w-12 <%= !leaderboardUserPictureURL ? 'hidden' : '' %>">
+                    <img src="<%= leaderboardUserPictureURL%>" alt="">
+                </div>
+
+                <div class="stat-title px-2">
+                    <%= leaderboardUserPictureURL ? 'High Score to Beat' : 'High Score' %>
+                </div>
+
+            </div>
+
+            <div class="stat-value font-medium" id="high-score">
+                <%= highScoreDetails ? highScoreDetails.netWPM : 'Log In' %>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Time Elapsed -->
+
+    <div>
+
+        <div class="stat place-items-center opacity-0 transition-opacity" id="timer-parent">
+            <div class="stat-title">Time Elapsed</div>
+            <div class="stat-value font-medium" id="timer">0s</div>
+        </div>
+
+    </div>
+
+</div>

@@ -7,8 +7,8 @@ const UI = {
     netWPMText: document.querySelector("#results-modal #net-wpm") as HTMLDivElement,
     accuracyText: document.querySelector("#results-modal #accuracy") as HTMLDivElement,
 
-    liveWPMValue: document.querySelector("#live-gross-wpm") as HTMLDivElement,
     liveTimerValue: document.querySelector("#timer") as HTMLDivElement,
+    liveTimerParent: document.querySelector("#timer-parent") as HTMLDivElement,
 
     highScoreValue: document.querySelector("#high-score") as HTMLDivElement,
 
@@ -26,9 +26,6 @@ let incorrectCharCount = 0
 let startTypingFlag: Boolean = false
 const excludedKeys = ["Shift", "Control", "Alt"]
 
-const liveWPMIntervalInMS = 0.3 * 1000
-
-let liveWPMInterval: NodeJS.Timeout 
 let liveTimerInterval: NodeJS.Timeout 
 
 let allLetters = document.querySelectorAll("#textChar")
@@ -53,7 +50,13 @@ function startTyping(e: KeyboardEvent){
     if (e.key == allLetters[currentCharIndex].textContent){
         isIncorrectChar(false)
     } else {
-        isIncorrectChar(true)
+
+        if (!allLetters[currentCharIndex].textContent?.trim()){
+            isIncorrectChar(true, "space")
+        }
+        else {
+             isIncorrectChar(true)
+        }
         incorrectCharCount++
     }
 
@@ -72,6 +75,7 @@ function startTyping(e: KeyboardEvent){
 function backSpace(){
     allLetters[currentCharIndex - 1].classList.remove("correctColor")
     allLetters[currentCharIndex - 1].classList.remove("incorrectColor")
+    allLetters[currentCharIndex - 1].classList.remove("incorrectColorSpace")
 
     allLetters[currentCharIndex].classList.remove("text-highlight")
     allLetters[currentCharIndex - 1].classList.add("text-highlight")
@@ -79,9 +83,12 @@ function backSpace(){
     currentCharIndex--
 }
 
-function isIncorrectChar(flag: boolean){
+function isIncorrectChar(flag: boolean, space: string = ""){
     if (flag){
         allLetters[currentCharIndex].classList.add("incorrectColor")
+        if (space){
+            allLetters[currentCharIndex].classList.add("incorrectColorSpace")
+        }
     } else {
         allLetters[currentCharIndex].classList.add("correctColor")
     }
@@ -129,7 +136,6 @@ function endTyping(){
 
 
 function resetVariablesForRetry(){
-    UI.liveWPMValue.textContent = "0"
     UI.liveTimerValue.textContent = "0s"
 
     currentCharIndex = 0
@@ -138,6 +144,7 @@ function resetVariablesForRetry(){
     allLetters.forEach((eachLetter) => {
         eachLetter.classList.remove("correctColor")
         eachLetter.classList.remove("incorrectColor")
+        eachLetter.classList.remove("incorrectColorSpace")
         eachLetter.classList.remove("text-highlight")
     })
 
@@ -163,12 +170,6 @@ function bodyEventListener(e: KeyboardEvent){
      if (!startTypingFlag){
         removeBlur()
 
-        startTypingFlag = true
-        startTime = Date.now()
-
-        liveWPMInterval = setInterval(updateLiveWPM, liveWPMIntervalInMS)
-        liveTimerInterval = setInterval(updateLiveTimer, 1 * 1000)
-
         return
     }
 
@@ -177,31 +178,21 @@ function bodyEventListener(e: KeyboardEvent){
 
 function removeBlur(){
     UI.blurOverlay.classList.add("hidden")
-    UI.textSection.classList.remove("blur-sm")
+    UI.textSection.classList.remove("blur-md")
+    UI.liveTimerParent.classList.remove("opacity-0")
+
+    startTypingFlag = true
+    startTime = Date.now()
+
+    liveTimerInterval = setInterval(updateLiveTimer, 1 * 1000)
 }
 
 function addBlur(){
     UI.blurOverlay.classList.remove("hidden")
-    UI.textSection.classList.add("blur-sm")
+    UI.textSection.classList.add("blur-md")
+    UI.liveTimerParent.classList.add("opacity-0")
 }
 
-function updateLiveWPM(){
-
-    if (!startTypingFlag){
-        clearInterval(liveWPMInterval)
-    }
-
-     endTime = Date.now()
-            
-    let durationInMin = (endTime - startTime) / 60000
-
-    // WPM exlcuding errors
-    let typedLetters = document.querySelectorAll(".incorrectColor").length + document.querySelectorAll(".correctColor").length
-            
-    let liveGrossWPM = (typedLetters / 5) / durationInMin
-
-    UI.liveWPMValue.textContent = Math.round(liveGrossWPM).toString()
-}
 
 function updateLiveTimer(){
     if (!startTypingFlag){

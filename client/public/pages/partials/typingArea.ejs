@@ -1,0 +1,17 @@
+<div class="relative w-full h-fit max-h-96 ">
+
+    <div class="relative h-full">
+
+        <div class="cursor-pointer blur-md p-5 resize-none text-2xl text-gray-400 leading-loose" id="textSection">
+            <% let formattedText=text.split("").map(char=> `<span id='textChar' class='py-1'>${char}</span>`).join("");
+                %>
+                <%- formattedText %>
+        </div>
+
+    </div>
+
+    <div class="absolute top-0 w-full h-full flex justify-center items-center text-lg cursor-pointer" id="blurOverlay">
+        Click here or press any key to focus
+    </div>
+
+</div>

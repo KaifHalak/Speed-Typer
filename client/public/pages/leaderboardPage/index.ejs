@@ -1,74 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dim">
+<%- include('../partials/theme.ejs'); %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
 
-<link rel="stylesheet" href="/assets/tailwind.css">
+    <link rel="stylesheet" href="/assets/tailwind.css">
 
-<body>
+    <body>
 
-    <div class="w-full h-full px-32">
+        <div class="w-full h-full px-32">
 
-        <!-- Navbar -->
+            <!-- Navbar -->
 
-        <%- include('../partials/navbar.ejs', {pictureURL}); %>
+            <%- include('../partials/navbar.ejs', {pictureURL}); %>
 
-            <div class="overflow-x-auto">
-                <table class="table w-full">
-                    <!-- head -->
-                    <thead>
-                        <tr>
-                            <th class="text-center">Placement</th>
-                            <th class="text-center">Username</th>
-                            <th class="text-center">Net WPM</th>
-                            <th class="text-center">Accuracy</th>
-                            <th class="text-center">Date Achieved</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% leaderboardData.forEach(({_id, userId, netWPM, accuracy, dateAchieved }, index)=> { %>
-                            <tr class="<%= index === 0 ? 'bg-base-200' : '' %>">
-                                <td class="text-center">
-                                    <%= index + 1 %>
-                                </td>
-                                <td class="text-center">
-                                    <div class="flex items-center gap-3">
-                                        <div class="avatar">
-                                            <div class="mask mask-squircle w-12 h-12">
-                                                <img src="<%= userId.pictureURL %>" />
+                <div class="overflow-x-auto">
+                    <table class="table w-full">
+                        <!-- head -->
+                        <thead>
+                            <tr>
+                                <th class="text-center">Placement</th>
+                                <th class="text-center">Username</th>
+                                <th class="text-center">Net WPM</th>
+                                <th class="text-center">Accuracy</th>
+                                <th class="text-center">Date Achieved</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% leaderboardData.forEach(({_id, userId, netWPM, accuracy, dateAchieved }, index)=> { %>
+                                <tr class="<%= index === 0 ? 'bg-base-200' : '' %>">
+                                    <td class="text-center">
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar">
+                                                <div class="mask mask-squircle w-12 h-12">
+                                                    <img src="<%= userId.pictureURL %>" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <%= userId.username %>
                                             </div>
                                         </div>
-                                        <div>
-                                            <%= userId.username %>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <%= netWPM %>
-                                </td>
-                                <td class="text-center">
-                                    <%= accuracy %>
-                                </td>
-                                <td class="text-center">
-                                    <%= dateAchieved.toLocaleDateString() %>
-                                </td>
-                                <td class="text-center">
-                                    <button class="btn btn-ghost btn-xs"
-                                        onclick="window.location.href='/leaderboard/<%= _id %>'">Play</button>
-                                </td>
-                            </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
-            </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= netWPM %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= accuracy %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= dateAchieved.toLocaleDateString() %>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-ghost btn-xs"
+                                            onclick="window.location.href='/leaderboard/<%= _id %>'">Play</button>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
 
-    </div>
+        </div>
 
-</body>
+    </body>
 
-</html>
+    </html>

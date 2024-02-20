@@ -5,8 +5,8 @@ const UI = {
     grossWPMText: document.querySelector("#results-modal #gross-wpm"),
     netWPMText: document.querySelector("#results-modal #net-wpm"),
     accuracyText: document.querySelector("#results-modal #accuracy"),
-    liveWPMValue: document.querySelector("#live-gross-wpm"),
     liveTimerValue: document.querySelector("#timer"),
+    liveTimerParent: document.querySelector("#timer-parent"),
     highScoreValue: document.querySelector("#high-score"),
     hiddenFullText: document.querySelector("#hidden-full-text"),
     retryButton: document.querySelector("#retry-button")
@@ -18,12 +18,11 @@ let currentCharIndex = 0;
 let incorrectCharCount = 0;
 let startTypingFlag = false;
 const excludedKeys = ["Shift", "Control", "Alt"];
-const liveWPMIntervalInMS = 0.3 * 1000;
-let liveWPMInterval;
 let liveTimerInterval;
 let allLetters = document.querySelectorAll("#textChar");
 allLetters[currentCharIndex].classList.add("text-highlight");
 function startTyping(e) {
+    var _a;
     if (e.key === "Backspace" && currentCharIndex >= 0) {
         // Don't do anything if still on the first char
         if (currentCharIndex === 0) {
@@ -39,7 +38,12 @@ function startTyping(e) {
         isIncorrectChar(false);
     }
     else {
-        isIncorrectChar(true);
+        if (!((_a = allLetters[currentCharIndex].textContent) === null || _a === void 0 ? void 0 : _a.trim())) {
+            isIncorrectChar(true, "space");
+        }
+        else {
+            isIncorrectChar(true);
+        }
         incorrectCharCount++;
     }
     currentCharIndex++;
@@ -53,13 +57,17 @@ function startTyping(e) {
 function backSpace() {
     allLetters[currentCharIndex - 1].classList.remove("correctColor");
     allLetters[currentCharIndex - 1].classList.remove("incorrectColor");
+    allLetters[currentCharIndex - 1].classList.remove("incorrectColorSpace");
     allLetters[currentCharIndex].classList.remove("text-highlight");
     allLetters[currentCharIndex - 1].classList.add("text-highlight");
     currentCharIndex--;
 }
-function isIncorrectChar(flag) {
+function isIncorrectChar(flag, space = "") {
     if (flag) {
         allLetters[currentCharIndex].classList.add("incorrectColor");
+        if (space) {
+            allLetters[currentCharIndex].classList.add("incorrectColorSpace");
+        }
     }
     else {
         allLetters[currentCharIndex].classList.add("correctColor");
@@ -90,13 +98,13 @@ function endTyping() {
     }
 }
 function resetVariablesForRetry() {
-    UI.liveWPMValue.textContent = "0";
     UI.liveTimerValue.textContent = "0s";
     currentCharIndex = 0;
     incorrectCharCount = 0;
     allLetters.forEach((eachLetter) => {
         eachLetter.classList.remove("correctColor");
         eachLetter.classList.remove("incorrectColor");
+        eachLetter.classList.remove("incorrectColorSpace");
         eachLetter.classList.remove("text-highlight");
     });
     allLetters[currentCharIndex].classList.add("text-highlight");
@@ -114,32 +122,22 @@ document.body.addEventListener("keydown", bodyEventListener);
 function bodyEventListener(e) {
     if (!startTypingFlag) {
         removeBlur();
-        startTypingFlag = true;
-        startTime = Date.now();
-        liveWPMInterval = setInterval(updateLiveWPM, liveWPMIntervalInMS);
-        liveTimerInterval = setInterval(updateLiveTimer, 1 * 1000);
         return;
     }
     startTyping(e);
 }
 function removeBlur() {
     UI.blurOverlay.classList.add("hidden");
-    UI.textSection.classList.remove("blur-sm");
+    UI.textSection.classList.remove("blur-md");
+    UI.liveTimerParent.classList.remove("opacity-0");
+    startTypingFlag = true;
+    startTime = Date.now();
+    liveTimerInterval = setInterval(updateLiveTimer, 1 * 1000);
 }
 function addBlur() {
     UI.blurOverlay.classList.remove("hidden");
-    UI.textSection.classList.add("blur-sm");
-}
-function updateLiveWPM() {
-    if (!startTypingFlag) {
-        clearInterval(liveWPMInterval);
-    }
-    endTime = Date.now();
-    let durationInMin = (endTime - startTime) / 60000;
-    // WPM exlcuding errors
-    let typedLetters = document.querySelectorAll(".incorrectColor").length + document.querySelectorAll(".correctColor").length;
-    let liveGrossWPM = (typedLetters / 5) / durationInMin;
-    UI.liveWPMValue.textContent = Math.round(liveGrossWPM).toString();
+    UI.textSection.classList.add("blur-md");
+    UI.liveTimerParent.classList.add("opacity-0");
 }
 function updateLiveTimer() {
     if (!startTypingFlag) {

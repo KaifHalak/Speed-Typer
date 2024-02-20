@@ -5,9 +5,9 @@ import { getUserHighscoreDetails, getLeaderboardData, getLeaderboardUserData } f
 import { userHighScoreSchemaI } from "../utils/database/schemas"
 import { UserI } from "../utils/types/reqUser"
 
-// let text = "The quick brown fox jumps over the lazy dog. This sentence is often used to test typewriters and computer keyboards due to its use of every letter in the English alphabet. It is also a popular pangram, a sentence that contains every letter of the alphabet at least once."
+let text = "The quick brown fox jumps over the lazy dog. This sentence is often used to test typewriters and computer keyboards due to its use of every letter in the English alphabet. It is also a popular pangram, a sentence that contains every letter of the alphabet at least once."
 
-let text = "Hello There"
+// let text = "Hello There"
 
 const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "main", "index")
 const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardPage", "index.ejs")
@@ -47,7 +47,7 @@ export async function GETLeaderboardText(req: Request, res: Response, next: Next
 
     let leaderboardId = req.params.id
 
-    if (!leaderboardId){return next()}
+    if (!leaderboardId){return}
 
     let pictureURL: string | null = null
 
@@ -60,7 +60,7 @@ export async function GETLeaderboardText(req: Request, res: Response, next: Next
     let { highScoreDetails, placement } = await getLeaderboardUserData(leaderboardId)
     
 
-    res.render(LEADERBOARD_TEXT, { text: highScoreDetails.text, pictureURL, highScoreDetails, placement })
+    res.render(LEADERBOARD_TEXT, { text: highScoreDetails.text, pictureURL, highScoreDetails, placement: `#${placement}` })
 }
 
 

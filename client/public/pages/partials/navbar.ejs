@@ -1,4 +1,4 @@
-<div class="navbar bg-base-100">
+<div class="navbar bg-base-100 mb-10">
     <div class="flex-1">
         <a class="btn btn-ghost text-xl" href="/">Speed Typer</a>
 
@@ -12,7 +12,8 @@
 
             <div class="items-center">
 
-                <div class="avatar placeholder cursor-pointer <%= pictureURL ? 'hidden' : ''  %>" onclick="auth_modal.showModal()">
+                <div class="avatar placeholder cursor-pointer <%= pictureURL ? 'hidden' : ''  %>"
+                    onclick="auth_modal.showModal()">
 
                     <div class="bg-neutral text-neutral-content rounded-full w-12">
 
@@ -34,7 +35,7 @@
                         </div>
                     </div>
 
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-52">
                         <li><a href="/auth/sign-out">Sign Out</a></li>
                     </ul>
 

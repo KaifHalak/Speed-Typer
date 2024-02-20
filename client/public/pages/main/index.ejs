@@ -1,242 +1,142 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dim">
+<%- include('../partials/theme.ejs'); %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
 
-<link rel="stylesheet" href="/assets/tailwind.css">
-<link rel="stylesheet" href="/assets/googleAuthButton.css">
+    <link rel="stylesheet" href="/assets/tailwind.css">
+    <link rel="stylesheet" href="/assets/googleAuthButton.css">
 
-<script src="https://unpkg.com/htmx.org@1.9.10"
-    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
-    crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+        integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+        crossorigin="anonymous"></script>
 
-<body>
+    <body>
 
-    <div class="w-full h-full px-32">
+        <div class="w-full h-full px-32">
 
-        <!-- Navbar -->
+            <!-- Navbar -->
 
-        <%- include('../partials/navbar.ejs', {pictureURL}); %>
-
-
-            <!-- Live Stats -->
-
-            <div class="flex flex-row justify-between">
-
-                <!-- Live WPM and Highscore -->
-
-                <div class="stats shadow">
-
-                    <div class="stat place-items-center">
-                        <div class="stat-title">WPM</div>
-                        <div class="stat-value" id="live-gross-wpm">0</div>
-                        <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
-                    </div>
-
-                    <div class="stat place-items-center cursor-pointer"
-                        onclick="<%= highScoreDetails ? 'highscore_details_modal.showModal()' : 'auth_modal.showModal()' %>"
-                        hx-get="/user/placement" hx-target="#highscore_details_modal #placement">
-                        <div class="stat-title">High Score</div>
-                        <div class="stat-value" id="high-score">
-                            <%= highScoreDetails ? highScoreDetails.netWPM : 'Log In' %>
-                        </div>
-                        <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
-                    </div>
-
-                </div>
-
-                <!-- Time Elapsed -->
-
-                <div class="stats shadow">
-
-                    <div class="stat place-items-center">
-                        <div class="stat-value" id="timer">0s</div>
-                        <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Typing Area -->
-
-            <div class="relative w-full h-[500px]">
-
-                <div class="relative mockup-window border border-base-300 h-full">
-
-                    <div class="cursor-pointer blur-sm p-5 border-t border-base-300 resize-none text-2xl text-gray-400"
-                        id="textSection">
-                        <% let formattedText=text.split("").map(char=> `<span id='textChar'
-                                class='py-1'>${char}</span>`).join(""); %>
-                            <%- formattedText %>
-                    </div>
-
-                </div>
-
-                <div class="absolute top-0 w-full h-full flex justify-center items-center text-lg cursor-pointer"
-                    id="blurOverlay">
-                    Click here or press any key to focus
-                </div>
-
-            </div>
+            <%- include('../partials/navbar.ejs', {pictureURL}); %>
 
 
-            <!-- Show Results -->
+                <!-- Typing Data (Highscore and Timer) -->
 
-            <dialog id="results-modal" class="modal" checked="true">
-                <div class="modal-box">
-                    <h3 class="font-bold text-lg">Results</h3>
-                    <!-- <p class="py-4">Press ESC key or click the button below to close</p> -->
+                <%- include('../partials/typingData.ejs', {leaderboard: false, leaderboardUserPictureURL: "" }) %>
 
-                    <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+                    <!-- Typing Area -->
 
-                        <div class="stat">
-                            <div class="stat-title">Gross WPM</div>
-                            <div class="stat-value" id="gross-wpm"></div>
-                            <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
-                        </div>
-
-                        <div class="stat">
-                            <div class="stat-title">Net WPM</div>
-                            <div class="stat-value" id="net-wpm"></div>
-                            <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
-                        </div>
-
-                        <div class="stat">
-                            <div class="stat-title">Accurcay</div>
-                            <div class="stat-value" id="accuracy"></div>
-                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                        </div>
-
-                    </div>
-
-                    <div class="modal-action">
-                        <form method="dialog">
-                            <button class="btn" id="retry-button">Retry</button>
-                        </form>
-                    </div>
-
-                </div>
-            </dialog>
-
-
-            <!-- Show Highscore details -->
-
-            <dialog id="highscore_details_modal" class="modal">
-                <div class="modal-box w-fit max-w-5xl">
-
-                    <h3 class="font-bold text-lg">Highscore</h3>
-
-                    <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
-
-                        <div class="stat">
-                            <div class="stat-title">Net WPM</div>
-                            <div class="stat-value" id="net-wpm">
-                                <%= highScoreDetails ? highScoreDetails.netWPM : '' %>
-                            </div>
-                            <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
-                        </div>
-
-                        <div class="stat">
-                            <div class="stat-title">Accurcay</div>
-                            <div class="stat-value" id="accuracy">
-                                <%= highScoreDetails ? highScoreDetails.accuracy : '' %>%
-                            </div>
-                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                        </div>
-
-                        <div class="stat">
-                            <div class="stat-title">Date Achieved</div>
-                            <div class="stat-value" id="date-achieved">
-                                <%= highScoreDetails ? highScoreDetails.dateAchieved.toLocaleDateString() : '' %>
-                            </div>
-                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                        </div>
-
-                        <div class="stat">
-                            <div class="stat-title">Placement</div>
-                            <div class="stat-value" id="placement"></div>
-                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                        </div>
-
-                    </div>
-
-                    <div class="modal-action">
-                        <form method="dialog">
-                            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                                onclick="this.blur()">✕</button>
-                            <button class="btn" onclick="this.blur()">Play</button>
-                        </form>
-                    </div>
-
-                </div>
-            </dialog>
-
-    </div>
-
-
-    <!-- Auth -->
-
-    <dialog class="modal" id="auth_modal">
-        <div class="modal-box">
-
-            <div
-                class="flex flex-col justify-center gap-4 p-6 m-auto w-full h-full md:max-w-md md:h-auto md:rounded-box">
-
-                <h1 class="text-3xl font-bold self-center">
-                    Sign Up / Sign In
-                </h1>
-
-                <div class="divider my-0"></div>
-
-                <button class="gsi-material-button" onclick="window.location.href='/auth/google'">
-                    <div class="gsi-material-button-state"></div>
-                    <div class="gsi-material-button-content-wrapper">
-                        <div class="gsi-material-button-icon">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
-                                <path fill="#EA4335"
-                                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
-                                </path>
-                                <path fill="#4285F4"
-                                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z">
-                                </path>
-                                <path fill="#FBBC05"
-                                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z">
-                                </path>
-                                <path fill="#34A853"
-                                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z">
-                                </path>
-                                <path fill="none" d="M0 0h48v48H0z"></path>
-                            </svg>
-                        </div>
-                        <span class="gsi-material-button-contents">
-                            Continue with Google
-                        </span>
-                    </div>
-                </button>
-
-                <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                </form>
-            </div>
-
+                    <%- include('../partials/typingArea.ejs'); %>
 
 
         </div>
-    </dialog>
 
-    <!-- Other -->
 
-    <div class="hidden" id="hidden-full-text">
-        <%- text %>
-    </div>
+        <!-- Show Highscore details -->
+        <% if (highScoreDetails) { %>
+            <%- include('../partials/highscoreDetails.ejs', {leaderboard: false, netWPM: highScoreDetails.netWPM,
+                accuracy: highScoreDetails.accuracy, dateAchieved: highScoreDetails.dateAchieved}); %>
+                <% } %>
 
-</body>
-<script src="/pages/main/script.js" type="module"></script>
+                    <!-- Show Results -->
 
-</html>
+                    <dialog id="results-modal" class="modal" checked="true">
+                        <div class="modal-box">
+                            <h3 class="font-bold text-lg">Results</h3>
+                            <!-- <p class="py-4">Press ESC key or click the button below to close</p> -->
+
+                            <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                                <div class="stat">
+                                    <div class="stat-title">Gross WPM</div>
+                                    <div class="stat-value" id="gross-wpm"></div>
+                                    <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
+                                </div>
+
+                                <div class="stat">
+                                    <div class="stat-title">Net WPM</div>
+                                    <div class="stat-value" id="net-wpm"></div>
+                                    <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                                </div>
+
+                                <div class="stat">
+                                    <div class="stat-title">Accurcay</div>
+                                    <div class="stat-value" id="accuracy"></div>
+                                    <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                                </div>
+
+                            </div>
+
+                            <div class="modal-action">
+                                <form method="dialog">
+                                    <button class="btn" id="retry-button">Retry</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </dialog>
+
+                    <!-- Auth -->
+
+                    <dialog class="modal" id="auth_modal">
+                        <div class="modal-box">
+
+                            <div
+                                class="flex flex-col justify-center gap-4 p-6 m-auto w-full h-full md:max-w-md md:h-auto md:rounded-box">
+
+                                <h1 class="text-3xl font-bold self-center">
+                                    Sign Up / Sign In
+                                </h1>
+
+                                <div class="divider my-0"></div>
+
+                                <button class="gsi-material-button" onclick="window.location.href='/auth/google'">
+                                    <div class="gsi-material-button-state"></div>
+                                    <div class="gsi-material-button-content-wrapper">
+                                        <div class="gsi-material-button-icon">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                                                <path fill="#EA4335"
+                                                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
+                                                </path>
+                                                <path fill="#4285F4"
+                                                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z">
+                                                </path>
+                                                <path fill="#FBBC05"
+                                                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z">
+                                                </path>
+                                                <path fill="#34A853"
+                                                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z">
+                                                </path>
+                                                <path fill="none" d="M0 0h48v48H0z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="gsi-material-button-contents">
+                                            Continue with Google
+                                        </span>
+                                    </div>
+                                </button>
+
+                                <form method="dialog">
+                                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                </form>
+                            </div>
+
+
+
+                        </div>
+                    </dialog>
+
+                    <!-- Other -->
+
+                    <div class="hidden" id="hidden-full-text">
+                        <%- text %>
+                    </div>
+
+    </body>
+    <script src="/pages/main/script.js" type="module"></script>
+
+    </html>
