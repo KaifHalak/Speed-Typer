@@ -20,261 +20,237 @@
 
         <!-- Navbar -->
 
-        <div class="navbar bg-base-100">
-            <div class="flex-1">
-                <a class="btn btn-ghost text-xl">daisyUI</a>
-                <ul class="menu menu-horizontal px-1">
-                    <li><a href="/leaderboard">Leaderboard</a></li>
-                </ul>
-            </div>
-            <div class="flex-none">
-                <ul class="menu menu-horizontal px-1">
+        <%- include('../partials/navbar.ejs', {pictureURL}); %>
 
-                    <div class="items-center">
-                        <!-- add username if needed -->
-                        <div class="avatar placeholder cursor-pointer" onclick="auth_modal.showModal()">
-                            <div class="bg-neutral text-neutral-content rounded-full w-12">
 
-                                <img src="<%= pictureURL ? pictureURL : '' %>" alt="">
+            <!-- Live Stats -->
 
-                            </div>
-                        </div>
+            <div class="flex flex-row justify-between">
+
+                <!-- Live WPM and Highscore -->
+
+                <div class="stats shadow">
+
+                    <div class="stat place-items-center">
+                        <div class="stat-title">WPM</div>
+                        <div class="stat-value" id="live-gross-wpm">0</div>
+                        <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
                     </div>
 
+                    <div class="stat place-items-center cursor-pointer"
+                        onclick="<%= highScoreDetails ? 'highscore_details_modal.showModal()' : 'auth_modal.showModal()' %>">
 
-                </ul>
-            </div>
-        </div>
-
-
-        <!-- Live Stats -->
-
-        <div class="flex flex-row justify-between">
-
-            <!-- Live WPM and Highscore -->
-
-            <div class="stats shadow">
-
-                <div class="stat place-items-center">
-                    <div class="stat-title">WPM</div>
-                    <div class="stat-value" id="live-gross-wpm">0</div>
-                    <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
-                </div>
-
-                <div class="stat place-items-center cursor-pointer"
-                    onclick="<%= highScoreDetails ? 'highscore_details_modal.showModal()' : 'auth_modal.showModal()' %>">
-
-                    <div class="flex flex-row justify-center items-center">
-                        <div class="bg-neutral text-neutral-content rounded-full w-12">
-                            <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
-                        </div>
-
-                        <div class="stat-title px-4">
-                            High Score to Beat
-                        </div>
-                    </div>
-
-
-                    <div class="stat-value" id="high-score">
-                        <%= highScoreDetails.netWPM %>
-                    </div>
-                    <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
-                </div>
-
-            </div>
-
-            <!-- Time Elapsed -->
-
-            <div class="stats shadow">
-
-                <div class="stat place-items-center">
-                    <div class="stat-value" id="timer">0s</div>
-                    <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Typing Area -->
-
-        <div class="relative w-full h-[500px]">
-
-            <div class="relative mockup-window border border-base-300 h-full">
-
-                <div class="cursor-pointer blur-sm p-5 border-t border-base-300 resize-none text-2xl text-gray-400"
-                    id="textSection">
-                    <% let formattedText=text.split("").map(char=> `<span id='textChar'
-                            class='py-1'>${char}</span>`).join(""); %>
-                        <%- formattedText %>
-                </div>
-
-            </div>
-
-            <div class="absolute top-0 w-full h-full flex justify-center items-center text-lg cursor-pointer"
-                id="blurOverlay">
-                Click here or press any key to focus
-            </div>
-
-        </div>
-
-
-        <!-- Show Results -->
-
-        <dialog id="results-modal" class="modal" checked="true">
-            <div class="modal-box w-fit max-w-5xl">
-                <h3 class="font-bold text-lg">Results</h3>
-                <!-- <p class="py-4">Press ESC key or click the button below to close</p> -->
-
-                <!-- Other user -->
-                <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
-
-                    <div class="stat">
-                        <div class="flex flex-col justify-center items-center">
-
+                        <div class="flex flex-row justify-center items-center">
                             <div class="bg-neutral text-neutral-content rounded-full w-12">
                                 <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
                             </div>
 
-                            <div class="stat-title py-2">
-                                <%= highScoreDetails.userId.username %>
+                            <div class="stat-title px-4">
+                                High Score to Beat
                             </div>
-
                         </div>
-                    </div>
 
-                    <div class="stat">
-                        <div class="stat-title">Gross WPM</div>
-                        <div class="stat-value">
-                            <%= highScoreDetails.grossWPM %>
-                        </div>
-                        <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
-                    </div>
 
-                    <div class="stat">
-                        <div class="stat-title">Net WPM</div>
-                        <div class="stat-value">
+                        <div class="stat-value" id="high-score">
                             <%= highScoreDetails.netWPM %>
                         </div>
-                        <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Accurcay</div>
-                        <div class="stat-value">
-                            <%= highScoreDetails.accuracy %>%
-                        </div>
-                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                        <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
                     </div>
 
                 </div>
 
-                <!-- current user -->
+                <!-- Time Elapsed -->
 
-                <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+                <div class="stats shadow">
 
-                    <div class="stat">
-                        <div class="stat-value">You</div>
+                    <div class="stat place-items-center">
+                        <div class="stat-value" id="timer">0s</div>
+                        <!-- <div class="stat-desc">From January 1st to February 1st</div> -->
                     </div>
 
-                    <div class="stat">
-                        <div class="stat-title">Gross WPM</div>
-                        <div class="stat-value" id="gross-wpm"></div>
-                        <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Net WPM</div>
-                        <div class="stat-value" id="net-wpm"></div>
-                        <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Accurcay</div>
-                        <div class="stat-value" id="accuracy"></div>
-                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                    </div>
-
-                </div>
-
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn" id="retry-button">Retry</button>
-                    </form>
-                </div>
-
-            </div>
-        </dialog>
-
-
-        <!-- Show Highscore details -->
-
-        <dialog id="highscore_details_modal" class="modal">
-            <div class="modal-box w-fit max-w-5xl">
-
-                <h3 class="font-bold text-lg">Highscore</h3>
-
-                <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
-
-                    <div class="stat">
-
-                        <div class="flex flex-col justify-center items-center">
-
-                            <div class="bg-neutral text-neutral-content rounded-full w-12">
-                                <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
-                            </div>
-
-                            <div class="stat-title py-2">
-                                <%= highScoreDetails.userId.username %>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Net WPM</div>
-                        <div class="stat-value" id="net-wpm">
-                            <%= highScoreDetails ? highScoreDetails.netWPM : '' %>
-                        </div>
-                        <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Accurcay</div>
-                        <div class="stat-value" id="accuracy">
-                            <%= highScoreDetails.accuracy %>%
-                        </div>
-                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Date Achieved</div>
-                        <div class="stat-value" id="date-achieved">
-                            <%= highScoreDetails.dateAchieved.toLocaleDateString() %>
-                        </div>
-                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-title">Placement</div>
-                        <div class="stat-value" id="placement">#<%= placement %>
-                        </div>
-                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
-                    </div>
-
-                </div>
-
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                            onclick="this.blur()">✕</button>
-                        <button class="btn" onclick="this.blur()">Play</button>
-                    </form>
                 </div>
 
             </div>
-        </dialog>
+
+            <!-- Typing Area -->
+
+            <div class="relative w-full h-[500px]">
+
+                <div class="relative mockup-window border border-base-300 h-full">
+
+                    <div class="cursor-pointer blur-sm p-5 border-t border-base-300 resize-none text-2xl text-gray-400"
+                        id="textSection">
+                        <% let formattedText=text.split("").map(char=> `<span id='textChar'
+                                class='py-1'>${char}</span>`).join(""); %>
+                            <%- formattedText %>
+                    </div>
+
+                </div>
+
+                <div class="absolute top-0 w-full h-full flex justify-center items-center text-lg cursor-pointer"
+                    id="blurOverlay">
+                    Click here or press any key to focus
+                </div>
+
+            </div>
+
+
+            <!-- Show Results -->
+
+            <dialog id="results-modal" class="modal" checked="true">
+                <div class="modal-box w-fit max-w-5xl">
+                    <h3 class="font-bold text-lg">Results</h3>
+                    <!-- <p class="py-4">Press ESC key or click the button below to close</p> -->
+
+                    <!-- Other user -->
+                    <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                        <div class="stat">
+                            <div class="flex flex-col justify-center items-center">
+
+                                <div class="bg-neutral text-neutral-content rounded-full w-12">
+                                    <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
+                                </div>
+
+                                <div class="stat-title py-2">
+                                    <%= highScoreDetails.userId.username %>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Gross WPM</div>
+                            <div class="stat-value">
+                                <%= highScoreDetails.grossWPM %>
+                            </div>
+                            <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Net WPM</div>
+                            <div class="stat-value">
+                                <%= highScoreDetails.netWPM %>
+                            </div>
+                            <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Accurcay</div>
+                            <div class="stat-value">
+                                <%= highScoreDetails.accuracy %>%
+                            </div>
+                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                        </div>
+
+                    </div>
+
+                    <!-- current user -->
+
+                    <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                        <div class="stat">
+                            <div class="stat-value">You</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Gross WPM</div>
+                            <div class="stat-value" id="gross-wpm"></div>
+                            <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Net WPM</div>
+                            <div class="stat-value" id="net-wpm"></div>
+                            <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Accurcay</div>
+                            <div class="stat-value" id="accuracy"></div>
+                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                        </div>
+
+                    </div>
+
+                    <div class="modal-action">
+                        <form method="dialog">
+                            <button class="btn" id="retry-button">Retry</button>
+                        </form>
+                    </div>
+
+                </div>
+            </dialog>
+
+
+            <!-- Show Highscore details -->
+
+            <dialog id="highscore_details_modal" class="modal">
+                <div class="modal-box w-fit max-w-5xl">
+
+                    <h3 class="font-bold text-lg">Highscore</h3>
+
+                    <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                        <div class="stat">
+
+                            <div class="flex flex-col justify-center items-center">
+
+                                <div class="bg-neutral text-neutral-content rounded-full w-12">
+                                    <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
+                                </div>
+
+                                <div class="stat-title py-2">
+                                    <%= highScoreDetails.userId.username %>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Net WPM</div>
+                            <div class="stat-value" id="net-wpm">
+                                <%= highScoreDetails ? highScoreDetails.netWPM : '' %>
+                            </div>
+                            <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Accurcay</div>
+                            <div class="stat-value" id="accuracy">
+                                <%= highScoreDetails.accuracy %>%
+                            </div>
+                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Date Achieved</div>
+                            <div class="stat-value" id="date-achieved">
+                                <%= highScoreDetails.dateAchieved.toLocaleDateString() %>
+                            </div>
+                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-title">Placement</div>
+                            <div class="stat-value" id="placement">#<%= placement %>
+                            </div>
+                            <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                        </div>
+
+                    </div>
+
+                    <div class="modal-action">
+                        <form method="dialog">
+                            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                                onclick="this.blur()">✕</button>
+                            <button class="btn" onclick="this.blur()">Play</button>
+                        </form>
+                    </div>
+
+                </div>
+            </dialog>
 
     </div>
 

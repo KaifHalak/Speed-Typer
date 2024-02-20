@@ -10,7 +10,7 @@ import { UserI } from "../utils/types/reqUser"
 let text = "Hello There"
 
 const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "main", "index")
-const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "viewLeaderboard.ejs")
+const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardPage", "index.ejs")
 const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardTextReplay",  "index.ejs")
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {

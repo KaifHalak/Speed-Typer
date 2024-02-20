@@ -1,0 +1,49 @@
+<div class="navbar bg-base-100">
+    <div class="flex-1">
+        <a class="btn btn-ghost text-xl" href="/">Speed Typer</a>
+
+        <ul class="menu menu-horizontal px-1">
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
+
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+
+            <div class="items-center">
+
+                <div class="avatar placeholder cursor-pointer <%= pictureURL ? 'hidden' : ''  %>" onclick="auth_modal.showModal()">
+
+                    <div class="bg-neutral text-neutral-content rounded-full w-12">
+
+                        <img src="<%= pictureURL ? pictureURL : '' %>" alt="">
+
+                    </div>
+                </div>
+
+                <div class="dropdown dropdown-end <%= !pictureURL ? 'hidden' : ''  %> ">
+                    <div tabindex="0" role="button" class="mb-1">
+
+                        <div class="avatar placeholder cursor-pointer">
+
+                            <div class="bg-neutral text-neutral-content rounded-full w-12">
+
+                                <img src="<%= pictureURL ? pictureURL : '' %>" alt="">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
+                        <li><a href="/auth/sign-out">Sign Out</a></li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+        </ul>
+    </div>
+
+</div>
