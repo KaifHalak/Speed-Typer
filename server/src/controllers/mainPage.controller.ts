@@ -9,9 +9,9 @@ import { UserI } from "../utils/types/reqUser"
 
 let text = "Hello There"
 
-const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "index")
-const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "leaderboard.ejs")
-const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "playOtherUserText.ejs")
+const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "main", "index")
+const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "viewLeaderboard.ejs")
+const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardTextReplay",  "index.ejs")
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string | null = null
@@ -51,18 +51,16 @@ export async function GETLeaderboardText(req: Request, res: Response, next: Next
 
     let pictureURL: string | null = null
 
-    let highScoreDetails: userHighScoreSchemaI | null = null
-
     const userData = req.user as UserI
 
     if (userData && req.isAuthenticated()) {
         pictureURL = userData.pictureURL
     }
 
-    highScoreDetails = await getLeaderboardUserData(leaderboardId)
+    let { highScoreDetails, placement } = await getLeaderboardUserData(leaderboardId)
     
 
-    res.render(LEADERBOARD_TEXT, { text: highScoreDetails.text, pictureURL, highScoreDetails })
+    res.render(LEADERBOARD_TEXT, { text: highScoreDetails.text, pictureURL, highScoreDetails, placement })
 }
 
 

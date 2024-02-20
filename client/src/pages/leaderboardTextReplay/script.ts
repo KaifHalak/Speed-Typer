@@ -10,9 +10,7 @@ const UI = {
     liveWPMValue: document.querySelector("#live-gross-wpm") as HTMLDivElement,
     liveTimerValue: document.querySelector("#timer") as HTMLDivElement,
 
-    highScoreValue: document.querySelector("#high-score") as HTMLDivElement,
-
-    hiddenFullText: document.querySelector("#hidden-full-text") as HTMLDivElement
+    retryButton: document.querySelector("#retry-button") as HTMLButtonElement
 }
 
 let startTime: number
@@ -31,6 +29,14 @@ let liveTimerInterval: NodeJS.Timeout
 
 let allLetters = document.querySelectorAll("#textChar")
 allLetters[currentCharIndex].classList.add("text-highlight")
+
+
+UI.retryButton.addEventListener("click", (event) => {
+    resetVariablesForRetry()
+    UI.retryButton.blur()
+})
+
+document.body.addEventListener("keydown", bodyEventListener)
 
 
 function startTyping(e: KeyboardEvent){
@@ -115,14 +121,7 @@ function endTyping(){
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%"
     
     UI.resultsModal.showModal()
-
-    if (netWPM > Number(UI.highScoreValue.textContent)){
-       updateHighScore(netWPM, accuracy)
-
-    }
-
     
-
 }
 
 
@@ -151,7 +150,6 @@ UI.blurOverlay.addEventListener('click', () => {
     removeBlur()
 })
 
-document.body.addEventListener("keydown", bodyEventListener)
 
 function bodyEventListener(e: KeyboardEvent){
      if (!startTypingFlag){
@@ -205,37 +203,6 @@ function updateLiveTimer(){
     let currentValue = parseInt(UI.liveTimerValue.textContent!);
     currentValue++;
     UI.liveTimerValue.textContent =  currentValue.toString() + "s"
-}
-
-function updateHighScore(netWPM: number, accuracy: number){
-     UI.highScoreValue.textContent = Math.round(netWPM).toString()
-
-    let payload = JSON.stringify({newHighScore: Math.round(netWPM),
-                 accuracy: Math.round(accuracy),
-                    text: UI.hiddenFullText.textContent!.trim()})
-
-        // TODO: prevent highscore manipulation when sending it to server
-        let url = "/user/highscore"
-        fetch(url, {
-            method: "PATCH",
-            headers: {'Content-Type': 'application/json'},
-            body: payload
-        })
-        .then((res) => {
-            if (!res.ok){
-                // throw some error
-                return
-            }
-
-            return res.json()
-        })
-        .then((payload) => {
-            // tell user that the highscore has been updated
-        })
-        .catch(error => {
-            // Handle any errors that occur during the fetch operation
-            // console.error('There was a problem with the fetch operation:', error);
-        });
 }
 
 

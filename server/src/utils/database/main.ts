@@ -83,7 +83,13 @@ export async function getLeaderboardUserData(leaderboardId: string){
         path: "userId",
         select: "pictureURL username -_id"
     })
-    return documents[0]
+
+    let allUsers = await leaderBoardModel.find()
+    allUsers =  bubbleSort<typeof allUsers[0]>(allUsers)
+
+    let placement = allUsers.findIndex(document => document.netWPM === documents[0].netWPM) + 1
+
+    return {highScoreDetails: documents[0], placement}
 }
 
 

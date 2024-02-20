@@ -7,8 +7,7 @@ const UI = {
     accuracyText: document.querySelector("#results-modal #accuracy"),
     liveWPMValue: document.querySelector("#live-gross-wpm"),
     liveTimerValue: document.querySelector("#timer"),
-    highScoreValue: document.querySelector("#high-score"),
-    hiddenFullText: document.querySelector("#hidden-full-text")
+    retryButton: document.querySelector("#retry-button")
 };
 let startTime;
 let endTime;
@@ -22,6 +21,11 @@ let liveWPMInterval;
 let liveTimerInterval;
 let allLetters = document.querySelectorAll("#textChar");
 allLetters[currentCharIndex].classList.add("text-highlight");
+UI.retryButton.addEventListener("click", (event) => {
+    resetVariablesForRetry();
+    UI.retryButton.blur();
+});
+document.body.addEventListener("keydown", bodyEventListener);
 function startTyping(e) {
     if (e.key === "Backspace" && currentCharIndex >= 0) {
         // Don't do anything if still on the first char
@@ -84,9 +88,6 @@ function endTyping() {
     UI.netWPMText.textContent = Math.round(netWPM).toString();
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%";
     UI.resultsModal.showModal();
-    if (netWPM > Number(UI.highScoreValue.textContent)) {
-        updateHighScore(grossWPM, netWPM, accuracy);
-    }
 }
 function resetVariablesForRetry() {
     UI.liveWPMValue.textContent = "0";
@@ -105,7 +106,6 @@ function resetVariablesForRetry() {
 UI.blurOverlay.addEventListener('click', () => {
     removeBlur();
 });
-document.body.addEventListener("keydown", bodyEventListener);
 function bodyEventListener(e) {
     if (!startTypingFlag) {
         removeBlur();
@@ -143,35 +143,5 @@ function updateLiveTimer() {
     let currentValue = parseInt(UI.liveTimerValue.textContent);
     currentValue++;
     UI.liveTimerValue.textContent = currentValue.toString() + "s";
-}
-function updateHighScore(grossWPM, netWPM, accuracy) {
-    UI.highScoreValue.textContent = Math.round(netWPM).toString();
-    let payload = JSON.stringify({
-        grossWPM: Math.round(grossWPM),
-        netWPM: Math.round(netWPM),
-        accuracy: Math.round(accuracy),
-        text: UI.hiddenFullText.textContent.trim()
-    });
-    // TODO: prevent highscore manipulation when sending it to server
-    let url = "/user/highscore";
-    fetch(url, {
-        method: "PATCH",
-        headers: { 'Content-Type': 'application/json' },
-        body: payload
-    })
-        .then((res) => {
-        if (!res.ok) {
-            // throw some error
-            return;
-        }
-        return res.json();
-    })
-        .then((payload) => {
-        // tell user that the highscore has been updated
-    })
-        .catch(error => {
-        // Handle any errors that occur during the fetch operation
-        // console.error('There was a problem with the fetch operation:', error);
-    });
 }
 export {};

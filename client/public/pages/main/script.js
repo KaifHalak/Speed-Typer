@@ -8,7 +8,8 @@ const UI = {
     liveWPMValue: document.querySelector("#live-gross-wpm"),
     liveTimerValue: document.querySelector("#timer"),
     highScoreValue: document.querySelector("#high-score"),
-    hiddenFullText: document.querySelector("#hidden-full-text")
+    hiddenFullText: document.querySelector("#hidden-full-text"),
+    retryButton: document.querySelector("#retry-button")
 };
 let startTime;
 let endTime;
@@ -85,7 +86,7 @@ function endTyping() {
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%";
     UI.resultsModal.showModal();
     if (netWPM > Number(UI.highScoreValue.textContent)) {
-        updateHighScore(netWPM, accuracy);
+        updateHighScore(grossWPM, netWPM, accuracy);
     }
 }
 function resetVariablesForRetry() {
@@ -102,6 +103,10 @@ function resetVariablesForRetry() {
     document.body.addEventListener("keydown", bodyEventListener);
     addBlur();
 }
+UI.retryButton.addEventListener("click", () => {
+    resetVariablesForRetry();
+    UI.retryButton.blur();
+});
 UI.blurOverlay.addEventListener('click', () => {
     removeBlur();
 });
@@ -144,11 +149,14 @@ function updateLiveTimer() {
     currentValue++;
     UI.liveTimerValue.textContent = currentValue.toString() + "s";
 }
-function updateHighScore(netWPM, accuracy) {
+function updateHighScore(grossWPM, netWPM, accuracy) {
     UI.highScoreValue.textContent = Math.round(netWPM).toString();
-    let payload = JSON.stringify({ newHighScore: Math.round(netWPM),
+    let payload = JSON.stringify({
+        grossWPM: Math.round(grossWPM),
+        netWPM: Math.round(netWPM),
         accuracy: Math.round(accuracy),
-        text: UI.hiddenFullText.textContent.trim() });
+        text: UI.hiddenFullText.textContent.trim()
+    });
     // TODO: prevent highscore manipulation when sending it to server
     let url = "/user/highscore";
     fetch(url, {

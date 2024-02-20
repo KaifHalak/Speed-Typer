@@ -12,7 +12,9 @@ const UI = {
 
     highScoreValue: document.querySelector("#high-score") as HTMLDivElement,
 
-    hiddenFullText: document.querySelector("#hidden-full-text") as HTMLDivElement
+    hiddenFullText: document.querySelector("#hidden-full-text") as HTMLDivElement,
+
+    retryButton: document.querySelector("#retry-button") as HTMLButtonElement
 }
 
 let startTime: number
@@ -146,6 +148,10 @@ function resetVariablesForRetry(){
     addBlur()
 }
 
+UI.retryButton.addEventListener("click", () => {
+    resetVariablesForRetry()
+    UI.retryButton.blur()
+})
 
 UI.blurOverlay.addEventListener('click', () => {
     removeBlur()
