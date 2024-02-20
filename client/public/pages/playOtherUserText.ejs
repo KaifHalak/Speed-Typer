@@ -64,7 +64,18 @@
                 <div class="stat place-items-center cursor-pointer"
                     onclick="<%= highScoreDetails ? 'highscore_details_modal.showModal()' : 'auth_modal.showModal()' %>"
                     hx-get="/user/placement" hx-target="#highscore_details_modal #placement">
-                    <div class="stat-title">High Score</div>
+
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="bg-neutral text-neutral-content rounded-full w-12">
+                            <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
+                        </div>
+
+                        <div class="stat-title px-4">
+                            High Score to Beat
+                        </div>
+                    </div>
+
+
                     <div class="stat-value" id="high-score">
                         <%= highScoreDetails ? highScoreDetails.netWPM : 'Log In' %>
                     </div>
@@ -116,7 +127,48 @@
                 <h3 class="font-bold text-lg">Results</h3>
                 <!-- <p class="py-4">Press ESC key or click the button below to close</p> -->
 
+                <!-- Other user -->
                 <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                    <div class="stat">
+                        <div class="bg-neutral text-neutral-content rounded-full w-12">
+                            <img src="<%= highScoreDetails.userId.pictureURL %>" alt="">
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Gross WPM</div>
+                        <div class="stat-value">
+                            <%= highScoreDetails.grossWPM %>
+                        </div>
+                        <!-- <div class="stat-desc">Jan 1st - Feb 1st</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Net WPM</div>
+                        <div class="stat-value">
+                            <%= highScoreDetails.netWPM %>
+                        </div>
+                        <!-- <div class="stat-desc">↗︎ 400 (22%)</div> -->
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-title">Accurcay</div>
+                        <div class="stat-value">
+                            <%= highScoreDetails.accuracy %>
+                        </div>
+                        <!-- <div class="stat-desc">↘︎ 90 (14%)</div> -->
+                    </div>
+
+                </div>
+
+                <!-- current user -->
+
+                <div class="stats stats-vertical lg:stats-horizontal shadow place-items-center">
+
+                    <div class="stat">
+                        <div class="stat-value">You</div>
+                    </div>
 
                     <div class="stat">
                         <div class="stat-title">Gross WPM</div>

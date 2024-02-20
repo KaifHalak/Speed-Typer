@@ -52,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% leaderboardData.forEach(({userId, netWPM, accuracy, dateAchieved }, index)=> { %>
+                    <% leaderboardData.forEach(({_id, userId, netWPM, accuracy, dateAchieved }, index)=> { %>
                         <tr class="<%= index === 0 ? 'bg-base-200' : '' %>">
                             <td class="text-center">
                                 <%= index + 1 %>
@@ -79,7 +79,7 @@
                                 <%= dateAchieved.toLocaleDateString() %>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-ghost btn-xs">Play</button>
+                                <button class="btn btn-ghost btn-xs" onclick="window.location.href='/leaderboard/<%= _id %>'">Play</button>
                             </td>
                         </tr>
                         <% }); %>

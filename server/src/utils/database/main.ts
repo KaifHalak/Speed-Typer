@@ -18,7 +18,7 @@ export async function getUserHighscoreDetails(userId: string){
     return document[0].highScoreDetails
 }
 
-export async function updateUserHighscoreValue(userId: string, newHighScore: number, accuracy: number, text: string){
+export async function updateUserHighscoreValue(userId: string, grossWPM: number, netWPM: number, accuracy: number, text: string){
     let document = (await userModel.find({_id: userId}))[0]
 
     let currentDate = new Date()
@@ -26,26 +26,27 @@ export async function updateUserHighscoreValue(userId: string, newHighScore: num
     document.highScoreDetails.dateAchieved = currentDate
     document.highScoreDetails.accuracy = accuracy
     document.highScoreDetails.text = text
-    document.highScoreDetails.netWPM = newHighScore
+    document.highScoreDetails.netWPM = netWPM
+    document.highScoreDetails.grossWPM = grossWPM
 
-    await updateLeaderboardHighscore(document.highScoreDetails._id, newHighScore, currentDate, accuracy, text, userId)
+    await updateLeaderboardHighscore(document.highScoreDetails._id, grossWPM, netWPM, currentDate, accuracy, text, userId)
 
     await document.save()
     return true
 }
 
-export async function updateLeaderboardHighscore(highscoreId: String, newHighScore: number, dateAchieved: Date, accuracy: number, text: string, userId: String){
+export async function updateLeaderboardHighscore(highscoreId: String, grossWPM: Number, netWPM: number, dateAchieved: Date, accuracy: number, text: string, userId: String){
     let document = (await leaderBoardModel.find({_id: highscoreId}))[0]
     
     if (!document){
         document = await leaderBoardModel.create({ _id: highscoreId, userId: userId })
     }
-
-    document.netWPM = newHighScore
+    
+    document.netWPM = netWPM
+    document.grossWPM = grossWPM
     document.text = text
     document.dateAchieved = dateAchieved
     document.accuracy = accuracy
-
     await document.save()
     return true
 }
@@ -64,15 +65,25 @@ export async function getUserHighscorePlacement(userId: string){
     return placement
 }
 
-export async function getLeaderboard(){
+export async function getLeaderboardData(){
     let documents = await leaderBoardModel.find()
-    .select("-_id -__v")
+    .select("-__v")
     .populate({
         path: "userId",
         select: "pictureURL username -_id"
     })
     documents = bubbleSort<typeof documents[0]>(documents)
     return documents
+}
+
+export async function getLeaderboardUserData(leaderboardId: string){
+    let documents = await leaderBoardModel.find({_id: leaderboardId})
+    .select("-_id -__v")
+    .populate({
+        path: "userId",
+        select: "pictureURL username -_id"
+    })
+    return documents[0]
 }
 
 

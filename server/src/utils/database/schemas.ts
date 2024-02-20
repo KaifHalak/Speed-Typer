@@ -16,6 +16,7 @@ interface userSchemaI {
 interface userHighScoreSchemaI {
         text: string,
         netWPM: Number,
+        grossWPM: Number
         dateAchieved: Date,
         accuracy: Number
         _id: String
@@ -31,6 +32,10 @@ let userHighScoreSchema = new mongoose.Schema<userHighScoreSchemaI>({
         default: ""
     },
     netWPM: {
+        type: Number,
+        default: 0
+    },
+    grossWPM: {
         type: Number,
         default: 0
     },
@@ -103,6 +108,10 @@ let leaderBoardSchema = new mongoose.Schema<leaderBoardSchemaI>({
     text: {
         type: String,
         default: ""
+    },
+    grossWPM: {
+        type: Number,
+        default: 0
     },
     netWPM: {
         type: Number,

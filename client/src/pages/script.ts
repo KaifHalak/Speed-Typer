@@ -117,7 +117,7 @@ function endTyping(){
     UI.resultsModal.showModal()
 
     if (netWPM > Number(UI.highScoreValue.textContent)){
-       updateHighScore(grossWPM, netWPM, accuracy)
+       updateHighScore(netWPM, accuracy)
 
     }
 
@@ -207,14 +207,12 @@ function updateLiveTimer(){
     UI.liveTimerValue.textContent =  currentValue.toString() + "s"
 }
 
-function updateHighScore(grossWPM: number,netWPM: number, accuracy: number){
+function updateHighScore(netWPM: number, accuracy: number){
      UI.highScoreValue.textContent = Math.round(netWPM).toString()
 
-    let payload = JSON.stringify({
-            grossWPM: Math.round(grossWPM), 
-            netWPM: Math.round(netWPM),
-            accuracy: Math.round(accuracy),
-            text: UI.hiddenFullText.textContent!.trim()})
+    let payload = JSON.stringify({newHighScore: Math.round(netWPM),
+                 accuracy: Math.round(accuracy),
+                    text: UI.hiddenFullText.textContent!.trim()})
 
         // TODO: prevent highscore manipulation when sending it to server
         let url = "/user/highscore"

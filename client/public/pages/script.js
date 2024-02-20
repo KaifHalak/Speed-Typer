@@ -85,7 +85,7 @@ function endTyping() {
     UI.accuracyText.textContent = Math.round(accuracy).toString() + "%";
     UI.resultsModal.showModal();
     if (netWPM > Number(UI.highScoreValue.textContent)) {
-        updateHighScore(grossWPM, netWPM, accuracy);
+        updateHighScore(netWPM, accuracy);
     }
 }
 function resetVariablesForRetry() {
@@ -144,14 +144,11 @@ function updateLiveTimer() {
     currentValue++;
     UI.liveTimerValue.textContent = currentValue.toString() + "s";
 }
-function updateHighScore(grossWPM, netWPM, accuracy) {
+function updateHighScore(netWPM, accuracy) {
     UI.highScoreValue.textContent = Math.round(netWPM).toString();
-    let payload = JSON.stringify({
-        grossWPM: Math.round(grossWPM),
-        netWPM: Math.round(netWPM),
+    let payload = JSON.stringify({ newHighScore: Math.round(netWPM),
         accuracy: Math.round(accuracy),
-        text: UI.hiddenFullText.textContent.trim()
-    });
+        text: UI.hiddenFullText.textContent.trim() });
     // TODO: prevent highscore manipulation when sending it to server
     let url = "/user/highscore";
     fetch(url, {

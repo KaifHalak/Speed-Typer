@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import path from "path"
 
-import { getUserHighscoreDetails, getLeaderboard } from "../utils/database/main"
+import { getUserHighscoreDetails, getLeaderboardData, getLeaderboardUserData } from "../utils/database/main"
 import { userHighScoreSchemaI } from "../utils/database/schemas"
 import { UserI } from "../utils/types/reqUser"
 
@@ -11,6 +11,7 @@ let text = "Hello There"
 
 const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "index")
 const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "leaderboard.ejs")
+const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "playOtherUserText.ejs")
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string | null = null
@@ -27,12 +28,42 @@ export async function GETMainPage(req: Request, res: Response, next: NextFunctio
     res.render(MAIN_PAGE, { text, pictureURL, highScoreDetails })
 }
 
+
 export async function GETLeaderboardPage(req: Request, res: Response, next: NextFunction) {
-    let leaderboardData = await getLeaderboard()
+    let pictureURL = ""
+    
+    let leaderboardData = await getLeaderboardData()
+
+    const userData = req.user as UserI
+    if (userData && req.isAuthenticated()){
+        pictureURL = userData.pictureURL
+    }
+
+    res.render(LEADERBOARD_PAGE, {leaderboardData, pictureURL})
+}
+
+
+export async function GETLeaderboardText(req: Request, res: Response, next: NextFunction) {
+
+    let leaderboardId = req.params.id
+
+    if (!leaderboardId){return next()}
+
+    let pictureURL: string | null = null
+
+    let highScoreDetails: userHighScoreSchemaI | null = null
 
     const userData = req.user as UserI
 
-    res.render(LEADERBOARD_PAGE, {leaderboardData, pictureURL: userData.pictureURL})
+    if (userData && req.isAuthenticated()) {
+        pictureURL = userData.pictureURL
+    }
+
+    highScoreDetails = await getLeaderboardUserData(leaderboardId)
+    
+
+    res.render(LEADERBOARD_TEXT, { text: highScoreDetails.text, pictureURL, highScoreDetails })
 }
+
 
 
