@@ -2,9 +2,9 @@ import { Router } from "express"
 
 const userRouter = Router()
 
-import { POSTUpdateHighScore, GETUserPlacement } from "../controllers/user.controller"
+import { PATCHUpdateHighScore, GETUserPlacement } from "../controllers/user.controller"
 
-userRouter.patch("/highscore", POSTUpdateHighScore)
+userRouter.patch("/highscore", PATCHUpdateHighScore)
 userRouter.get("/placement", GETUserPlacement)
 
 export default userRouter

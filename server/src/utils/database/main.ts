@@ -12,7 +12,7 @@ export async function startDBServer(){
 }
 
 // add DB error handling
-
+// TODO: maybe change to leaderboardModel when retrieving highscore details?
 export async function getUserHighscoreDetails(userId: string){
     let document = await userModel.find({_id: userId})
     return document[0].highScoreDetails

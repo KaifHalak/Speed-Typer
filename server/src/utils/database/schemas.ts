@@ -15,7 +15,7 @@ interface userSchemaI {
 
 interface userHighScoreSchemaI {
         text: string,
-        netWPM: Number,
+        netWPM: number,
         grossWPM: Number
         dateAchieved: Date,
         accuracy: Number

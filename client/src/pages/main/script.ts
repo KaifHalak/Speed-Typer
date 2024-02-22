@@ -22,13 +22,16 @@ const UI = {
     allLetters: document.querySelectorAll("#textChar") as NodeListOf<HTMLDivElement>
 }
 
-function updateHighScore(grossWPM: number,netWPM: number, accuracy: number){
+function updateHighScore(grossWPM: number,netWPM: number, accuracy: number, correctEntries: number, incorrectEntries: number, durationInMin: number){
      UI.highScoreValue.textContent = Math.round(netWPM).toString()
 
     let payload = JSON.stringify({
-            grossWPM: Math.round(grossWPM), 
-            netWPM: Math.round(netWPM),
-            accuracy: Math.round(accuracy),
+            grossWPM, 
+            netWPM,
+            accuracy,
+            correctEntries,
+            incorrectEntries,
+            durationInMin,
             text: UI.hiddenFullText.textContent!.trim()})
 
         // TODO: prevent highscore manipulation when sending it to server
@@ -60,8 +63,8 @@ initValues(UI)
 // TODO: Fix this type
 document.addEventListener("end-typing", (e: any) => {
     // Extract data from event detail
-    let { grossWPM, netWPM, accuracy } = e.detail
-    updateHighScore(grossWPM, netWPM, accuracy);
+    let { grossWPM, netWPM, accuracy, correctEntries, incorrectEntries, durationInMin } = e.detail
+    updateHighScore(grossWPM, netWPM, accuracy, correctEntries, incorrectEntries, durationInMin);
 });
 
 

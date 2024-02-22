@@ -132,15 +132,15 @@ function endTyping(){
     let grossWPM = (typedLetters / 5) / durationInMin
 
     // Excluding errors which were corrected
-    let incorrectLetters = document.querySelectorAll(".incorrectColor").length
-    let errorRate = (incorrectLetters / 5) / durationInMin
+    let incorrectEntries = document.querySelectorAll(".incorrectColor").length
+    let errorRate = (incorrectEntries / 5) / durationInMin
 
     // WPM including errors (excluding corrected errors)
     let netWPM = grossWPM - errorRate
 
     // Including errors which we corrected
     let correctEntries = UI.allLetters.length - incorrectCharCount
-    let accuracy = (correctEntries / UI.allLetters.length) * 100
+    let accuracy = (correctEntries / typedLetters) * 100
 
     UI.grossWPMText.textContent = Math.round(grossWPM).toString()
     UI.netWPMText.textContent = Math.round(netWPM).toString()
@@ -150,7 +150,7 @@ function endTyping(){
 
     if (netWPM > Number(UI.highScoreValue.textContent)){
         let endTypingEvent = new CustomEvent("end-typing", { detail: {
-            grossWPM, netWPM, accuracy
+            grossWPM, netWPM, accuracy, correctEntries, incorrectEntries, durationInMin 
         } })
         document.dispatchEvent(endTypingEvent)
     }
