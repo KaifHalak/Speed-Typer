@@ -84,6 +84,8 @@ export async function getLeaderboardUserData(leaderboardId: string){
         select: "pictureURL username -_id"
     })
 
+    if (documents.length === 0){return {error: "user does not exist on the leaderboard"}}
+
     let allUsers = await leaderBoardModel.find()
     allUsers =  bubbleSort<typeof allUsers[0]>(allUsers)
 

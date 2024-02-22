@@ -6,10 +6,6 @@ import { UserI } from "../utils/types/reqUser"
 // TODO: add proper error handling
 
 export async function PATCHUpdateHighScore(req: Request, res: Response, next: NextFunction) {
-    if (!(req.user && req.isAuthenticated())){
-        return
-    }
-
     // check that accuracy is correct according to netWPM and grossWPM
 
     const userData = req.user as UserI 
@@ -26,17 +22,12 @@ export async function PATCHUpdateHighScore(req: Request, res: Response, next: Ne
 }
 
 export async function GETUserPlacement(req: Request, res: Response, next: NextFunction) {
-    if (!(req.user && req.isAuthenticated())){
-        return
-    }
-
     const userData = req.user as UserI
     
     let placement = await getUserHighscorePlacement(userData.userId)
 
     res.send("#" + placement.toString())
 }
-
 
 
 async function validateNetWPM(correctEntries: number, incorrectEntries: number, grossWPM: number, netWPM: number, accuracy: number, durationInMin: number, userId: string){

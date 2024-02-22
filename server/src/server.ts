@@ -1,6 +1,6 @@
 import app from "./config/serverSettings";
 
-import { GETMainPage, GETLeaderboardPage } from "./controllers/mainPage.controller"
+import { GETMainPage, pageNotFound } from "./controllers/mainPage.controller"
 app.get("/", GETMainPage)
 
 import leaderboardRouter from "./routes/leaderboard.routes";
@@ -11,5 +11,11 @@ app.use("/auth", authRouter)
 
 import userRouter from "./routes/user.routes";
 app.use("/user", userRouter)
+
+app.use("/", pageNotFound)
+
+
+
+
 
 
