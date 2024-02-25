@@ -10,12 +10,14 @@ let startTypingFlag: Boolean = false
 const excludedKeys = ["Shift", "Control", "Alt"]
 
 let liveTimerInterval: NodeJS.Timeout 
+const startTimerInSec = 15
 
 export function initValues(globalVariables: UIInterface){
     UI = globalVariables
     UI.allLetters[currentCharIndex].classList.add("text-highlight")
     eventListeners()
 
+    UI.liveTimerValue.textContent = startTimerInSec + "s"
 
 }
 
@@ -33,7 +35,9 @@ function eventListeners(){
 }
 
 function resetVariablesForRetry(){
-    UI.liveTimerValue.textContent = "0s"
+    addBlur()
+
+    UI.liveTimerValue.textContent = startTimerInSec + "s"
 
     currentCharIndex = 0
     incorrectCharCount = 0
@@ -48,8 +52,6 @@ function resetVariablesForRetry(){
     UI.allLetters[currentCharIndex].classList.add("text-highlight")
 
     document.body.addEventListener("keydown", bodyEventListener)
-
-    addBlur()
 }
 
 function startTyping(e: KeyboardEvent){
@@ -81,11 +83,6 @@ function startTyping(e: KeyboardEvent){
     }
 
     currentCharIndex++
-
-    if (currentCharIndex == UI.allLetters.length){
-        endTyping()
-        return
-    }
 
     UI.allLetters[currentCharIndex - 1].classList.remove("text-highlight")
     UI.allLetters[currentCharIndex].classList.add("text-highlight")
@@ -124,6 +121,7 @@ function endTyping(){
     document.body.removeEventListener("keydown", bodyEventListener)
 
     let durationInMin = (endTime - startTime) / 60000
+    console.log((endTime - startTime) / 1000)
 
     // WPM exlcuding errors
 
@@ -139,7 +137,7 @@ function endTyping(){
     let netWPM = grossWPM - errorRate
 
     // Including errors which we corrected
-    let correctEntries = UI.allLetters.length - incorrectCharCount
+    let correctEntries = document.querySelectorAll(".correctColor").length
     let accuracy = (correctEntries / typedLetters) * 100
 
     UI.grossWPMText.textContent = Math.round(grossWPM).toString()
@@ -187,13 +185,18 @@ function addBlur(){
 }
 
 function updateLiveTimer(){
-    if (!startTypingFlag){
-        clearInterval(liveTimerInterval)
-    }
 
     let currentValue = parseInt(UI.liveTimerValue.textContent!);
-    currentValue++;
+    currentValue--;
+
     UI.liveTimerValue.textContent =  currentValue.toString() + "s"
+
+    if (currentCharIndex == UI.allLetters.length || currentValue === 0 ){
+        clearInterval(liveTimerInterval)
+        endTyping()
+        return
+    }
+
 }
 
 

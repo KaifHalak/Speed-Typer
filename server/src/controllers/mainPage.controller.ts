@@ -4,10 +4,7 @@ import path from "path"
 import { getUserHighscoreDetails, getLeaderboardData, getLeaderboardUserData } from "../utils/database/main"
 import { userHighScoreSchemaI } from "../utils/database/schemas"
 import { UserI } from "../utils/types/reqUser"
-
-// let text = "The quick brown fox jumps over the lazy dog. This sentence is often used to test typewriters and computer keyboards due to its use of every letter in the English alphabet. It is also a popular pangram, a sentence that contains every letter of the alphabet at least once."
-
-let text = "Hello There"
+import { generateRandomText } from "../utils/textGen/gen"
 
 const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "main", "index")
 const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardPage", "index.ejs")
@@ -25,6 +22,8 @@ export async function GETMainPage(req: Request, res: Response, next: NextFunctio
         pictureURL = userData.pictureURL
         highScoreDetails = await getUserHighscoreDetails(userData.userId)
     }
+
+    let text = generateRandomText(1)[0]
 
     res.render(MAIN_PAGE, { text, pictureURL, highScoreDetails })
 }

@@ -48,5 +48,5 @@ async function validateNetWPM(correctEntries: number, incorrectEntries: number, 
 
     let { netWPM: currentNetWPM } = await getUserHighscoreDetails(userId)
 
-    return (validateGrossWPM === (grossWPM) && validateNetWPM === netWPM &&validateAccuracy === accuracy && ( wpmRatio < validateAccuracy + 10 && wpmRatio > validateAccuracy - 10 ) && validateNetWPM > currentNetWPM )
+    return (validateGrossWPM === grossWPM && validateNetWPM === netWPM && validateAccuracy === accuracy && ( wpmRatio < validateAccuracy + 10 && wpmRatio > validateAccuracy - 10 ) && validateNetWPM >= currentNetWPM )
 }
