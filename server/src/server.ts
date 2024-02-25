@@ -12,6 +12,9 @@ app.use("/auth", authRouter)
 import userRouter from "./routes/user.routes";
 app.use("/user", userRouter)
 
+import raceRouter from "./routes/race.routes";
+app.use("/race", raceRouter)
+
 app.use("/", pageNotFound)
 
 

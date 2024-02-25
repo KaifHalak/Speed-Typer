@@ -10,6 +10,7 @@ const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", 
 const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardPage", "index.ejs")
 const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardTextReplay",  "index.ejs")
 const PAGE_NOT_FOUND = path.join(__dirname, "../", "../", "../", "client", "public", "pages","404Page",  "index.ejs")
+const RACE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","race",  "index.ejs")
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string | null = null
@@ -23,7 +24,9 @@ export async function GETMainPage(req: Request, res: Response, next: NextFunctio
         highScoreDetails = await getUserHighscoreDetails(userData.userId)
     }
 
-    let text = generateRandomText(1)[0]
+    let paragraphs = 1
+    let sentences = 8
+    let text = generateRandomText(paragraphs, sentences)[0]
 
     res.render(MAIN_PAGE, { text, pictureURL, highScoreDetails })
 }
@@ -75,5 +78,17 @@ export async function pageNotFound(req: Request, res: Response, next: NextFuncti
    return res.status(404).render(PAGE_NOT_FOUND, {pictureURL})
 }   
 
+
+export async function GETRace(req: Request, res: Response, next: NextFunction) {
+    let pictureURL: string = ''
+
+    const userData = req.user as UserI
+
+    if (userData && req.isAuthenticated()) {
+        pictureURL = userData.pictureURL
+    }
+
+   return res.render(RACE, {pictureURL})
+}  
 
 

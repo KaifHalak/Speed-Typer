@@ -2088,6 +2088,10 @@ html {
   left: 50%;
 }
 
+.left-\[-999999px\] {
+  left: -999999px;
+}
+
 .right-2 {
   right: 0.5rem;
 }
@@ -2102,14 +2106,6 @@ html {
 
 .top-2 {
   top: 0.5rem;
-}
-
-.left-full {
-  left: 100%;
-}
-
-.left-\[-999999px\] {
-  left: -999999px;
 }
 
 .z-\[1\] {
@@ -2168,6 +2164,10 @@ html {
 
 .max-h-96 {
   max-height: 24rem;
+}
+
+.w-10 {
+  width: 2.5rem;
 }
 
 .w-12 {

@@ -2,7 +2,7 @@
 
 import textData from "./data";
 
-export const generateRandomText = (paragraphs:number):string[] => {
+export const generateRandomText = (paragraphs:number, sentences = 20):string[] => {
     //* 70 Prepositions
     //* 876 Nouns
     //* 633 Verbs
@@ -10,7 +10,7 @@ export const generateRandomText = (paragraphs:number):string[] => {
     let text:string[] = []
 
     for(let p = 0, paragraph = ""; p < paragraphs; p++, paragraph = "") {
-        for( let i = 0; i < 20; i ++) {
+        for( let i = 0; i < sentences; i ++) {
             let pIndex1 = Math.floor(Math.random() * 69)
             let nIndex1 = Math.floor(Math.random() * 875)
             let vIndex = Math.floor(Math.random() * 632)
