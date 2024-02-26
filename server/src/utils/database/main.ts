@@ -4,11 +4,11 @@ import envGet  from "../env";
 import { userModel, leaderBoardModel } from "./schemas";
 
 export async function startDBServer(){
-    await mongoose.connect(envGet("DB_URL")!)
-    .catch((err: Error) => {
-        throw err
-    })
-    console.log(envGet("DB_URL")! + " DB connected")
+    // await mongoose.connect(envGet("DB_URL")!)
+    // .catch((err: Error) => {
+    //     throw err
+    // })
+    // console.log(envGet("DB_URL")! + " DB connected")
 }
 
 // add DB error handling

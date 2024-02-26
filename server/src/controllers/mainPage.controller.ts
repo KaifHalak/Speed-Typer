@@ -1,16 +1,22 @@
 import { Request, Response, NextFunction } from "express"
 import path from "path"
+import { v4 as uuidv4 } from 'uuid';
 
 import { getUserHighscoreDetails, getLeaderboardData, getLeaderboardUserData } from "../utils/database/main"
 import { userHighScoreSchemaI } from "../utils/database/schemas"
 import { UserI } from "../utils/types/reqUser"
 import { generateRandomText } from "../utils/textGen/gen"
 
+import Room from "../utils/classes/raceWithOthers/rooms";
+import Player from "../utils/classes/raceWithOthers/player";
+
 const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "main", "index")
 const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardPage", "index.ejs")
 const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardTextReplay",  "index.ejs")
 const PAGE_NOT_FOUND = path.join(__dirname, "../", "../", "../", "client", "public", "pages","404Page",  "index.ejs")
 const PRE_RACE_LOBBY = path.join(__dirname, "../", "../", "../", "client", "public", "pages","race",  "preRaceLobby.ejs")
+
+const ROOM_ID_LEN = 8
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string | null = null
@@ -79,23 +85,29 @@ export async function pageNotFound(req: Request, res: Response, next: NextFuncti
 }   
 
 
+let rooms = new Room()
+
+
 export async function GETPreRaceLobby(req: Request, res: Response, next: NextFunction) {
-    let pictureURL: string = ''
 
     const userData = req.user as UserI
 
-    if (userData && req.isAuthenticated()) {
-        pictureURL = userData.pictureURL
-    }
+    let roomId = generateRandomRoomID()
+    let currentUserDetails = {pictureURL: userData.pictureURL, username: userData.username}
+    let currentLobbyDetails = {inviteCode: roomId}
 
-    let paragraphs = 1
-    let sentences = 8
-    let text = generateRandomText(paragraphs, sentences)[0]
-
-    let currentUserDetails = {pictureURL}
-    let currentLobbyDetails = {inviteCode: "Test"}
+    let admin = new Player(userData.userId, userData.username, userData.pictureURL)
+    rooms.CreateRoom(roomId, admin)
 
    return res.render(PRE_RACE_LOBBY, {currentUserDetails, currentLobbyDetails})
 }  
 
+
+
+
+
+
+function generateRandomRoomID(){
+    return uuidv4().slice(0, ROOM_ID_LEN)
+}
 

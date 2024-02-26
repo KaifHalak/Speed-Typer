@@ -14,42 +14,42 @@ const STATIC_FILES_PATH = express.static(path.join(__dirname, "../","../", "../"
 const app = express();
 const server = http.createServer(app);
 
-app.use(expressSession({
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
-    sameSite: false
-  },
-  secret: [envGet("SESSION_SECRET")],
-  name:"speedTyperSession",
-  resave: true,
-  saveUninitialized: false,
-  store: new expressSession.MemoryStore()
-}))
+// app.use(expressSession({
+//   cookie: {
+//     maxAge: 24 * 60 * 60 * 1000,
+//     sameSite: false
+//   },
+//   secret: [envGet("SESSION_SECRET")],
+//   name:"speedTyperSession",
+//   resave: true,
+//   saveUninitialized: false,
+//   store: new expressSession.MemoryStore()
+// }))
 
-app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.initialize())
+// app.use(passport.session())
 // way around passport error
-app.use(function(request, response, next) {
-  if (request.session && !request.session.regenerate) {
-    request.session.regenerate = (cb: any) => {
-      cb()
-    }
-  }
-  if (request.session && !request.session.save) {
-    request.session.save = (cb: any) => {
-      cb()
-    }
-  }
-  next()
-})
+// app.use(function(request, response, next) {
+//   if (request.session && !request.session.regenerate) {
+//     request.session.regenerate = (cb: any) => {
+//       cb()
+//     }
+//   }
+//   if (request.session && !request.session.save) {
+//     request.session.save = (cb: any) => {
+//       cb()
+//     }
+//   }
+//   next()
+// })
 
-passport.serializeUser((user: Express.User, done) => {
-  done(null, user)
-})
+// passport.serializeUser((user: Express.User, done) => {
+//   done(null, user)
+// })
 
-passport.deserializeUser((user: Express.User, done) => {
-  done(null, user)
-})
+// passport.deserializeUser((user: Express.User, done) => {
+//   done(null, user)
+// })
 
 app.set('view engine', 'ejs');
 app.set('views', EJS_PATH);

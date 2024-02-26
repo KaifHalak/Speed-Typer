@@ -40,6 +40,7 @@
                     <div class="flex flex-col justify-center items-center">
 
                         <!-- Players joining -->
+
                         <div class="flex flex-col gap-6 bg-base-200 rounded-box p-6 max-w-xl border">
 
                             <div class="flex flex-col gap-2 items-center">
@@ -50,23 +51,12 @@
 
                             <div class="avatar placeholder flex justify-center items-center">
                                 <div class="bg-neutral text-neutral-content rounded-full w-12">
-                                    <span class="text-xl">AI</span>
+                                    <!-- <span class="text-xl">AI</span> -->
+                                    <img src="<%= currentUserDetails.pictureURL %>">
                                 </div>
-                                <span class="px-4">Ayesha</span>
-                            </div>
-
-                            <div class="avatar placeholder flex justify-center items-center">
-                                <div class="bg-neutral text-neutral-content rounded-full w-12">
-                                    <span class="text-xl">AI</span>
-                                </div>
-                                <span class="px-4">Ayesha</span>
-                            </div>
-
-                            <div class="avatar placeholder flex justify-center items-center">
-                                <div class="bg-neutral text-neutral-content rounded-full w-12">
-                                    <span class="text-xl">AI</span>
-                                </div>
-                                <span class="px-4">Ayesha</span>
+                                <span class="px-4">
+                                    <%= currentUserDetails.username %>
+                                </span>
                             </div>
 
                         </div>
