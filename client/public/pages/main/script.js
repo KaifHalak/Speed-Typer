@@ -13,12 +13,15 @@ const UI = {
     retryButton: document.querySelector("#retry-button"),
     allLetters: document.querySelectorAll("#textChar")
 };
-function updateHighScore(grossWPM, netWPM, accuracy) {
+function updateHighScore(grossWPM, netWPM, accuracy, correctEntries, incorrectEntries, durationInMin) {
     UI.highScoreValue.textContent = Math.round(netWPM).toString();
     let payload = JSON.stringify({
-        grossWPM: Math.round(grossWPM),
-        netWPM: Math.round(netWPM),
-        accuracy: Math.round(accuracy),
+        grossWPM,
+        netWPM,
+        accuracy,
+        correctEntries,
+        incorrectEntries,
+        durationInMin,
         text: UI.hiddenFullText.textContent.trim()
     });
     // TODO: prevent highscore manipulation when sending it to server
@@ -47,6 +50,6 @@ initValues(UI);
 // TODO: Fix this type
 document.addEventListener("end-typing", (e) => {
     // Extract data from event detail
-    let { grossWPM, netWPM, accuracy } = e.detail;
-    updateHighScore(grossWPM, netWPM, accuracy);
+    let { grossWPM, netWPM, accuracy, correctEntries, incorrectEntries, durationInMin } = e.detail;
+    updateHighScore(grossWPM, netWPM, accuracy, correctEntries, incorrectEntries, durationInMin);
 });

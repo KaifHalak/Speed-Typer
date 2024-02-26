@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<%- include('../partials/theme.ejs'); %>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <link rel="stylesheet" href="/assets/tailwind.css">
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+        integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+        crossorigin="anonymous"></script>
+
+    <body>
+        <!-- Navbar -->
+
+        <%- include('../partials/navbar.ejs', {pictureURL: currentUserDetails.pictureURL}); %>
+
+            <!-- in game -->
+            <div class="w-full h-full px-32 hidden">
+
+
+                <div class="relative w-full h-fit max-h-96 border ">
+
+                    <div class="relative h-full">
+
+                        <div class="cursor-pointer p-5 resize-none text-2xl text-gray-400 leading-loose"
+                            id="textSection">
+                            <% let formattedText=text.split("").map(char=> `<span id='textChar'
+                                    class='py-1'>${char}</span>`).join("");
+                                %>
+                                <%- formattedText %>
+                        </div>
+
+                    </div>
+
+                    <div class="hidden absolute top-0 w-full h-full flex justify-center items-center text-lg cursor-pointer"
+                        id="blurOverlay">
+                        Click here or press any key to focus
+                    </div>
+
+
+                </div>
+
+
+                <div class="w-full p-10">
+
+                    <div class="text-lg">Ayesha</div>
+                    <progress class=" progress w-full" value="0" max="100"></progress>
+
+                    <br><br>
+
+                    <div class="text-lg">Ayesha</div>
+                    <progress class="progress w-full" value="10" max="100"></progress>
+
+                    <br><br>
+
+                    <div class="text-lg">Ayesha</div>
+                    <progress class="progress w-full" value="40" max="100"></progress>
+
+                    <br><br>
+
+                    <div class="text-lg">Ayesha</div>
+                    <progress class="progress w-full" value="40" max="100"></progress>
+
+                </div>
+
+
+            </div>
+
+    </body>
+
+    </html>

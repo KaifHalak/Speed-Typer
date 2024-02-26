@@ -10,7 +10,7 @@ const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", 
 const LEADERBOARD_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardPage", "index.ejs")
 const LEADERBOARD_TEXT = path.join(__dirname, "../", "../", "../", "client", "public", "pages","leaderboardTextReplay",  "index.ejs")
 const PAGE_NOT_FOUND = path.join(__dirname, "../", "../", "../", "client", "public", "pages","404Page",  "index.ejs")
-const RACE = path.join(__dirname, "../", "../", "../", "client", "public", "pages","race",  "index.ejs")
+const PRE_RACE_LOBBY = path.join(__dirname, "../", "../", "../", "client", "public", "pages","race",  "preRaceLobby.ejs")
 
 export async function GETMainPage(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string | null = null
@@ -79,7 +79,7 @@ export async function pageNotFound(req: Request, res: Response, next: NextFuncti
 }   
 
 
-export async function GETRace(req: Request, res: Response, next: NextFunction) {
+export async function GETPreRaceLobby(req: Request, res: Response, next: NextFunction) {
     let pictureURL: string = ''
 
     const userData = req.user as UserI
@@ -88,7 +88,14 @@ export async function GETRace(req: Request, res: Response, next: NextFunction) {
         pictureURL = userData.pictureURL
     }
 
-   return res.render(RACE, {pictureURL})
+    let paragraphs = 1
+    let sentences = 8
+    let text = generateRandomText(paragraphs, sentences)[0]
+
+    let currentUserDetails = {pictureURL}
+    let currentLobbyDetails = {inviteCode: "Test"}
+
+   return res.render(PRE_RACE_LOBBY, {currentUserDetails, currentLobbyDetails})
 }  
 
 

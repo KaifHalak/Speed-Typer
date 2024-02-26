@@ -2,8 +2,8 @@ import { Router } from "express"
 
 const raceRouter = Router()
 
-import { GETRace } from "../controllers/mainPage.controller"
+import { GETPreRaceLobby } from "../controllers/mainPage.controller"
 
-raceRouter.get("/", GETRace)
+raceRouter.get("/lobby", GETPreRaceLobby)
 
 export default raceRouter
