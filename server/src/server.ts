@@ -16,7 +16,7 @@ let tempMemorySession = {
 app.use("/", (req, res, next) => {
     req.user = tempMemorySession.user1
     req.isAuthenticated = () => {
-        return true
+        return false
     }
 
     next()
