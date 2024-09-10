@@ -2,7 +2,7 @@
 
 This project challenges your typing skills.
 
-[Demo Video](speed-typer-demo-vid.mp4)
+![Demo Video](demo-gif.gif)
 
 ## Features
 
