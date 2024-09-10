@@ -1,6 +1,6 @@
 import Player from "./player"
 
-export default class Room {
+class Room {
 
     declare data: RoomI
 
@@ -37,6 +37,9 @@ export default class Room {
 
 }
 
+let rooms = new Room()
+
+export default rooms
 
 // let player1 = new Player("Ayesha", "")
 // let player2 = new Player("Usman", "")

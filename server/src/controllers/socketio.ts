@@ -1,7 +1,7 @@
 import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../utils/types/socketio";
 import { Server } from "socket.io";
+import http from "http"
 
-import { server } from "../config/serverSettings";
 
 const ioConfig = {
   cors: {
@@ -9,20 +9,30 @@ const ioConfig = {
   },
   serveClient: false
 }
-const io = new Server<
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData
->(server, ioConfig);
 
-io.on("connection", (socket) => {
+let io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 
-  console.log("socket connection")
-  socket.on("test", () => {
-    console.log("test")
-  })
+
+export function initServerSocket(server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>){
+    io = new Server<
+      ClientToServerEvents,
+      ServerToClientEvents,
+      InterServerEvents,
+      SocketData
+    >(server, ioConfig);
+
+
+    manageSocketConnections(io)
+}
+
+
+function manageSocketConnections(io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>){
+    io.on("connection", (socket) => {
+
+      
   
-
 })
+}
+
+
 

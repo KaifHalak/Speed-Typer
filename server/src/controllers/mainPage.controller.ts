@@ -7,7 +7,7 @@ import { userHighScoreSchemaI } from "../utils/database/schemas"
 import { UserI } from "../utils/types/reqUser"
 import { generateRandomText } from "../utils/textGen/gen"
 
-import Room from "../utils/classes/raceWithOthers/rooms";
+import rooms from "../utils/classes/raceWithOthers/rooms";
 import Player from "../utils/classes/raceWithOthers/player";
 
 const MAIN_PAGE = path.join(__dirname, "../", "../", "../", "client", "public", "pages", "main", "index")
@@ -84,8 +84,6 @@ export async function pageNotFound(req: Request, res: Response, next: NextFuncti
    return res.status(404).render(PAGE_NOT_FOUND, {pictureURL})
 }   
 
-
-let rooms = new Room()
 
 
 export async function GETPreRaceLobby(req: Request, res: Response, next: NextFunction) {

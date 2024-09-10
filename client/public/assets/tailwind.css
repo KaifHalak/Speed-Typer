@@ -794,39 +794,7 @@ html {
   justify-content: center;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  transition-duration: 200ms;
-  height: 1.25rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  width: -moz-fit-content;
-  width: fit-content;
-  padding-left: 0.563rem;
-  padding-right: 0.563rem;
-  border-radius: var(--rounded-badge, 1.9rem);
-  border-width: 1px;
-  --tw-border-opacity: 1;
-  border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-  --tw-text-opacity: 1;
-  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
-}
-
 @media (hover:hover) {
-  .label a:hover {
-    --tw-text-opacity: 1;
-    color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
-  }
-
   .menu li > *:not(ul):not(.menu-title):not(details):active,
 .menu li > *:not(ul):not(.menu-title):not(details).active,
 .menu li > details > summary:active {
@@ -1106,19 +1074,6 @@ html {
 
 .dropdown:is(details) summary::-webkit-details-marker {
   display: none;
-}
-
-.label {
-  display: flex;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 
 .input {
@@ -1466,25 +1421,6 @@ html {
   border-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-border-opacity)));
 }
 
-.badge-primary {
-  --tw-border-opacity: 1;
-  border-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
-  --tw-text-opacity: 1;
-  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
-}
-
-.badge-outline.badge-primary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)));
-}
-
-.btm-nav > * .label {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 .btn:active:hover,
   .btn:active:focus {
   animation: button-pop 0s ease-out;
@@ -1685,19 +1621,6 @@ html {
   margin-inline-start: -1px;
 }
 
-@supports (color:color-mix(in oklab,black,black)) {
-  @media (hover:hover) {
-    .link-accent:hover {
-      color: color-mix(in oklab,var(--fallback-a,oklch(var(--a)/1)) 80%,black);
-    }
-  }
-}
-
-.link-accent {
-  --tw-text-opacity: 1;
-  color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
-}
-
 .link:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -1886,12 +1809,6 @@ html {
   background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
 }
 
-.progress-primary::-moz-progress-bar {
-  border-radius: var(--rounded-box, 1rem);
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
-}
-
 .progress:indeterminate {
   --progress-color: var(--fallback-bc,oklch(var(--bc)/1));
   background-image: repeating-linear-gradient(
@@ -1906,10 +1823,6 @@ html {
   animation: progress-loading 5s ease-in-out infinite;
 }
 
-.progress-primary:indeterminate {
-  --progress-color: var(--fallback-p,oklch(var(--p)/1));
-}
-
 .progress::-webkit-progress-bar {
   border-radius: var(--rounded-box, 1rem);
   background-color: transparent;
@@ -1919,11 +1832,6 @@ html {
   border-radius: var(--rounded-box, 1rem);
   --tw-bg-opacity: 1;
   background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
-}
-
-.progress-primary::-webkit-progress-value {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
 }
 
 .progress:indeterminate::-moz-progress-bar {
@@ -2044,14 +1952,6 @@ html {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-.badge-lg {
-  height: 1.5rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  padding-left: 0.688rem;
-  padding-right: 0.688rem;
 }
 
 .btn-xs {
@@ -2372,20 +2272,8 @@ html {
   height: 100%;
 }
 
-.h-7 {
-  height: 1.75rem;
-}
-
-.h-28 {
-  height: 7rem;
-}
-
 .max-h-96 {
   max-height: 24rem;
-}
-
-.w-10 {
-  width: 2.5rem;
 }
 
 .w-12 {
@@ -2403,14 +2291,6 @@ html {
 
 .w-full {
   width: 100%;
-}
-
-.w-56 {
-  width: 14rem;
-}
-
-.w-16 {
-  width: 4rem;
 }
 
 .max-w-5xl {
@@ -2431,10 +2311,6 @@ html {
 
 .flex-none {
   flex: none;
-}
-
-.border-collapse {
-  border-collapse: collapse;
 }
 
 .-translate-x-1\/2 {
@@ -2487,12 +2363,8 @@ html {
   justify-content: space-around;
 }
 
-.justify-evenly {
-  justify-content: space-evenly;
-}
-
-.justify-stretch {
-  justify-content: stretch;
+.gap-2 {
+  gap: 0.5rem;
 }
 
 .gap-3 {
@@ -2501,10 +2373,6 @@ html {
 
 .gap-4 {
   gap: 1rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
 }
 
 .gap-6 {
@@ -2551,6 +2419,10 @@ html {
   background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -2561,10 +2433,6 @@ html {
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.p-10 {
-  padding: 2.5rem;
 }
 
 .px-1 {
@@ -2582,6 +2450,11 @@ html {
   padding-right: 8rem;
 }
 
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -2595,16 +2468,6 @@ html {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.px-10 {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .text-center {
@@ -2629,11 +2492,6 @@ html {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
 }
 
 .font-bold {
